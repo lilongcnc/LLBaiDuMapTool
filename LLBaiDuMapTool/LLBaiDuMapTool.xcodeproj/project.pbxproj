@@ -1,0 +1,521 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		89E59A1C1D4B4E6900DBB7E0 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 89E59A1B1D4B4E6900DBB7E0 /* main.m */; };
+		89E59A1F1D4B4E6900DBB7E0 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 89E59A1E1D4B4E6900DBB7E0 /* AppDelegate.m */; };
+		89E59A221D4B4E6900DBB7E0 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 89E59A211D4B4E6900DBB7E0 /* ViewController.m */; };
+		89E59A251D4B4E6900DBB7E0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 89E59A231D4B4E6900DBB7E0 /* Main.storyboard */; };
+		89E59A271D4B4E6900DBB7E0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 89E59A261D4B4E6900DBB7E0 /* Assets.xcassets */; };
+		89E59A2A1D4B4E6900DBB7E0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 89E59A281D4B4E6900DBB7E0 /* LaunchScreen.storyboard */; };
+		89E59A351D4B4E6900DBB7E0 /* LLBaiDuMapToolTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 89E59A341D4B4E6900DBB7E0 /* LLBaiDuMapToolTests.m */; };
+		89E59A401D4B4E6900DBB7E0 /* LLBaiDuMapToolUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 89E59A3F1D4B4E6900DBB7E0 /* LLBaiDuMapToolUITests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		89E59A311D4B4E6900DBB7E0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 89E59A0F1D4B4E6900DBB7E0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 89E59A161D4B4E6900DBB7E0;
+			remoteInfo = LLBaiDuMapTool;
+		};
+		89E59A3C1D4B4E6900DBB7E0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 89E59A0F1D4B4E6900DBB7E0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 89E59A161D4B4E6900DBB7E0;
+			remoteInfo = LLBaiDuMapTool;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		89E59A171D4B4E6900DBB7E0 /* LLBaiDuMapTool.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LLBaiDuMapTool.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		89E59A1B1D4B4E6900DBB7E0 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		89E59A1D1D4B4E6900DBB7E0 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		89E59A1E1D4B4E6900DBB7E0 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		89E59A201D4B4E6900DBB7E0 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		89E59A211D4B4E6900DBB7E0 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		89E59A241D4B4E6900DBB7E0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		89E59A261D4B4E6900DBB7E0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		89E59A291D4B4E6900DBB7E0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		89E59A2B1D4B4E6900DBB7E0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		89E59A301D4B4E6900DBB7E0 /* LLBaiDuMapToolTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LLBaiDuMapToolTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		89E59A341D4B4E6900DBB7E0 /* LLBaiDuMapToolTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LLBaiDuMapToolTests.m; sourceTree = "<group>"; };
+		89E59A361D4B4E6900DBB7E0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		89E59A3B1D4B4E6900DBB7E0 /* LLBaiDuMapToolUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LLBaiDuMapToolUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		89E59A3F1D4B4E6900DBB7E0 /* LLBaiDuMapToolUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LLBaiDuMapToolUITests.m; sourceTree = "<group>"; };
+		89E59A411D4B4E6900DBB7E0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		89E59A141D4B4E6900DBB7E0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		89E59A2D1D4B4E6900DBB7E0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		89E59A381D4B4E6900DBB7E0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		89E59A0E1D4B4E6900DBB7E0 = {
+			isa = PBXGroup;
+			children = (
+				89E59A191D4B4E6900DBB7E0 /* LLBaiDuMapTool */,
+				89E59A331D4B4E6900DBB7E0 /* LLBaiDuMapToolTests */,
+				89E59A3E1D4B4E6900DBB7E0 /* LLBaiDuMapToolUITests */,
+				89E59A181D4B4E6900DBB7E0 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		89E59A181D4B4E6900DBB7E0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				89E59A171D4B4E6900DBB7E0 /* LLBaiDuMapTool.app */,
+				89E59A301D4B4E6900DBB7E0 /* LLBaiDuMapToolTests.xctest */,
+				89E59A3B1D4B4E6900DBB7E0 /* LLBaiDuMapToolUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		89E59A191D4B4E6900DBB7E0 /* LLBaiDuMapTool */ = {
+			isa = PBXGroup;
+			children = (
+				89E59A1D1D4B4E6900DBB7E0 /* AppDelegate.h */,
+				89E59A1E1D4B4E6900DBB7E0 /* AppDelegate.m */,
+				89E59A201D4B4E6900DBB7E0 /* ViewController.h */,
+				89E59A211D4B4E6900DBB7E0 /* ViewController.m */,
+				89E59A231D4B4E6900DBB7E0 /* Main.storyboard */,
+				89E59A261D4B4E6900DBB7E0 /* Assets.xcassets */,
+				89E59A281D4B4E6900DBB7E0 /* LaunchScreen.storyboard */,
+				89E59A2B1D4B4E6900DBB7E0 /* Info.plist */,
+				89E59A1A1D4B4E6900DBB7E0 /* Supporting Files */,
+			);
+			path = LLBaiDuMapTool;
+			sourceTree = "<group>";
+		};
+		89E59A1A1D4B4E6900DBB7E0 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				89E59A1B1D4B4E6900DBB7E0 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		89E59A331D4B4E6900DBB7E0 /* LLBaiDuMapToolTests */ = {
+			isa = PBXGroup;
+			children = (
+				89E59A341D4B4E6900DBB7E0 /* LLBaiDuMapToolTests.m */,
+				89E59A361D4B4E6900DBB7E0 /* Info.plist */,
+			);
+			path = LLBaiDuMapToolTests;
+			sourceTree = "<group>";
+		};
+		89E59A3E1D4B4E6900DBB7E0 /* LLBaiDuMapToolUITests */ = {
+			isa = PBXGroup;
+			children = (
+				89E59A3F1D4B4E6900DBB7E0 /* LLBaiDuMapToolUITests.m */,
+				89E59A411D4B4E6900DBB7E0 /* Info.plist */,
+			);
+			path = LLBaiDuMapToolUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		89E59A161D4B4E6900DBB7E0 /* LLBaiDuMapTool */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 89E59A441D4B4E6900DBB7E0 /* Build configuration list for PBXNativeTarget "LLBaiDuMapTool" */;
+			buildPhases = (
+				89E59A131D4B4E6900DBB7E0 /* Sources */,
+				89E59A141D4B4E6900DBB7E0 /* Frameworks */,
+				89E59A151D4B4E6900DBB7E0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LLBaiDuMapTool;
+			productName = LLBaiDuMapTool;
+			productReference = 89E59A171D4B4E6900DBB7E0 /* LLBaiDuMapTool.app */;
+			productType = "com.apple.product-type.application";
+		};
+		89E59A2F1D4B4E6900DBB7E0 /* LLBaiDuMapToolTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 89E59A471D4B4E6900DBB7E0 /* Build configuration list for PBXNativeTarget "LLBaiDuMapToolTests" */;
+			buildPhases = (
+				89E59A2C1D4B4E6900DBB7E0 /* Sources */,
+				89E59A2D1D4B4E6900DBB7E0 /* Frameworks */,
+				89E59A2E1D4B4E6900DBB7E0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				89E59A321D4B4E6900DBB7E0 /* PBXTargetDependency */,
+			);
+			name = LLBaiDuMapToolTests;
+			productName = LLBaiDuMapToolTests;
+			productReference = 89E59A301D4B4E6900DBB7E0 /* LLBaiDuMapToolTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		89E59A3A1D4B4E6900DBB7E0 /* LLBaiDuMapToolUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 89E59A4A1D4B4E6900DBB7E0 /* Build configuration list for PBXNativeTarget "LLBaiDuMapToolUITests" */;
+			buildPhases = (
+				89E59A371D4B4E6900DBB7E0 /* Sources */,
+				89E59A381D4B4E6900DBB7E0 /* Frameworks */,
+				89E59A391D4B4E6900DBB7E0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				89E59A3D1D4B4E6900DBB7E0 /* PBXTargetDependency */,
+			);
+			name = LLBaiDuMapToolUITests;
+			productName = LLBaiDuMapToolUITests;
+			productReference = 89E59A3B1D4B4E6900DBB7E0 /* LLBaiDuMapToolUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		89E59A0F1D4B4E6900DBB7E0 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0730;
+				ORGANIZATIONNAME = "李龙";
+				TargetAttributes = {
+					89E59A161D4B4E6900DBB7E0 = {
+						CreatedOnToolsVersion = 7.3;
+					};
+					89E59A2F1D4B4E6900DBB7E0 = {
+						CreatedOnToolsVersion = 7.3;
+						TestTargetID = 89E59A161D4B4E6900DBB7E0;
+					};
+					89E59A3A1D4B4E6900DBB7E0 = {
+						CreatedOnToolsVersion = 7.3;
+						TestTargetID = 89E59A161D4B4E6900DBB7E0;
+					};
+				};
+			};
+			buildConfigurationList = 89E59A121D4B4E6900DBB7E0 /* Build configuration list for PBXProject "LLBaiDuMapTool" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 89E59A0E1D4B4E6900DBB7E0;
+			productRefGroup = 89E59A181D4B4E6900DBB7E0 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				89E59A161D4B4E6900DBB7E0 /* LLBaiDuMapTool */,
+				89E59A2F1D4B4E6900DBB7E0 /* LLBaiDuMapToolTests */,
+				89E59A3A1D4B4E6900DBB7E0 /* LLBaiDuMapToolUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		89E59A151D4B4E6900DBB7E0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				89E59A2A1D4B4E6900DBB7E0 /* LaunchScreen.storyboard in Resources */,
+				89E59A271D4B4E6900DBB7E0 /* Assets.xcassets in Resources */,
+				89E59A251D4B4E6900DBB7E0 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		89E59A2E1D4B4E6900DBB7E0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		89E59A391D4B4E6900DBB7E0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		89E59A131D4B4E6900DBB7E0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				89E59A221D4B4E6900DBB7E0 /* ViewController.m in Sources */,
+				89E59A1F1D4B4E6900DBB7E0 /* AppDelegate.m in Sources */,
+				89E59A1C1D4B4E6900DBB7E0 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		89E59A2C1D4B4E6900DBB7E0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				89E59A351D4B4E6900DBB7E0 /* LLBaiDuMapToolTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		89E59A371D4B4E6900DBB7E0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				89E59A401D4B4E6900DBB7E0 /* LLBaiDuMapToolUITests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		89E59A321D4B4E6900DBB7E0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 89E59A161D4B4E6900DBB7E0 /* LLBaiDuMapTool */;
+			targetProxy = 89E59A311D4B4E6900DBB7E0 /* PBXContainerItemProxy */;
+		};
+		89E59A3D1D4B4E6900DBB7E0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 89E59A161D4B4E6900DBB7E0 /* LLBaiDuMapTool */;
+			targetProxy = 89E59A3C1D4B4E6900DBB7E0 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		89E59A231D4B4E6900DBB7E0 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				89E59A241D4B4E6900DBB7E0 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		89E59A281D4B4E6900DBB7E0 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				89E59A291D4B4E6900DBB7E0 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		89E59A421D4B4E6900DBB7E0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		89E59A431D4B4E6900DBB7E0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		89E59A451D4B4E6900DBB7E0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = LLBaiDuMapTool/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.lauren.LLBaiDuMapTool;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		89E59A461D4B4E6900DBB7E0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = LLBaiDuMapTool/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.lauren.LLBaiDuMapTool;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		89E59A481D4B4E6900DBB7E0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = LLBaiDuMapToolTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.lauren.LLBaiDuMapToolTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LLBaiDuMapTool.app/LLBaiDuMapTool";
+			};
+			name = Debug;
+		};
+		89E59A491D4B4E6900DBB7E0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = LLBaiDuMapToolTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.lauren.LLBaiDuMapToolTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LLBaiDuMapTool.app/LLBaiDuMapTool";
+			};
+			name = Release;
+		};
+		89E59A4B1D4B4E6900DBB7E0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = LLBaiDuMapToolUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.lauren.LLBaiDuMapToolUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = LLBaiDuMapTool;
+			};
+			name = Debug;
+		};
+		89E59A4C1D4B4E6900DBB7E0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = LLBaiDuMapToolUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.lauren.LLBaiDuMapToolUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = LLBaiDuMapTool;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		89E59A121D4B4E6900DBB7E0 /* Build configuration list for PBXProject "LLBaiDuMapTool" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				89E59A421D4B4E6900DBB7E0 /* Debug */,
+				89E59A431D4B4E6900DBB7E0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		89E59A441D4B4E6900DBB7E0 /* Build configuration list for PBXNativeTarget "LLBaiDuMapTool" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				89E59A451D4B4E6900DBB7E0 /* Debug */,
+				89E59A461D4B4E6900DBB7E0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		89E59A471D4B4E6900DBB7E0 /* Build configuration list for PBXNativeTarget "LLBaiDuMapToolTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				89E59A481D4B4E6900DBB7E0 /* Debug */,
+				89E59A491D4B4E6900DBB7E0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		89E59A4A1D4B4E6900DBB7E0 /* Build configuration list for PBXNativeTarget "LLBaiDuMapToolUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				89E59A4B1D4B4E6900DBB7E0 /* Debug */,
+				89E59A4C1D4B4E6900DBB7E0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 89E59A0F1D4B4E6900DBB7E0 /* Project object */;
+}
