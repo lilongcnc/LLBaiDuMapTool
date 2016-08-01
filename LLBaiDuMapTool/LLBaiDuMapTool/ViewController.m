@@ -13,11 +13,10 @@
 #import "LLBaiDuMapTool.h"
 #import "CustomBuddleView.h"
 
-#define kBDMapKey (@"YwAodOr7UAGlYpNZgQGDYdtA")
+
 
 @interface ViewController ()
 {
-    BMKMapManager *_mapManager;
     BMKMapView *_mapView;
 }
 
@@ -35,22 +34,10 @@
 // 引入mapapi.bundle资源文件
 // 引入头文件
 
-//- (void)viewWillAppear:(BOOL)animated
-//{
-////    [_mapView viewWillAppear];
-//    [super viewWillAppear:animated];
-//
-//       _myBaiDuMapTool = [LLBaiDuMapTool new];
-//    [_myBaiDuMapTool addDelegate];
-//
-//
-//}
-//
 - (void)viewWillDisappear:(BOOL)animated
 {
     
     [super viewWillDisappear:animated];
-    
     
     [_myBaiDuMapTool ll_setDelegateNil];
 }
@@ -60,9 +47,8 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [_myBaiDuMapTool addDelegate];
-    
-    
 }
+
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
@@ -76,24 +62,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
-    // [self obtainBundleIdentifier];
-    
     
     _myBaiDuMapTool = [LLBaiDuMapTool new];
     
-    
-    _mapManager = [[BMKMapManager alloc]init];
-    
-    
-    // 如果要关注网络及授权验证事件，请设定 generalDelegateb参数
-    BOOL ret = [_mapManager start:kBDMapKey  generalDelegate:nil];
-    if (!ret) {
-        NSLog(@"manager start failed!");
-    } else {
-        NSLog(@"manager has started!");
-    }
-    
+
     [self createMapView];
     [self createBtns];
     //    [self createAnnotations];
@@ -107,6 +79,11 @@
 {
     
     _mapView = [_myBaiDuMapTool ll_getBMKMapViewWithFrame:CGRectMake(0, 100, kScreenWidth, kScreenHeight - 100) setDelegate:nil];
+    //加载地图完成
+    [_myBaiDuMapTool ll_mapViewDidFinishLoading:^(BMKMapView *mapView) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"" message:@"BMKMapView控件初始化完成" delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles: nil];
+        [alert show];
+    }];
     [self.view addSubview:_mapView];
     
     [_myBaiDuMapTool ll_setUserLocationServiceConfig];

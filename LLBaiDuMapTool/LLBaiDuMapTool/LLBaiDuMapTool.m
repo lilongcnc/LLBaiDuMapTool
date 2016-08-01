@@ -24,6 +24,7 @@
 @property (nonatomic, copy) didUpdateBMKUserLocationBlock localblock;
 @property (nonatomic, copy) didUpdateUserHeadingnBlock headingblock;
 @property (nonatomic, copy) didFailToLocateUserWithErrorBlock localFailedblock;
+@property (nonatomic,copy) mapViewDidFinishLoadingBlock mapViewFinshblock;
 
 @end
 
@@ -70,6 +71,10 @@
     return _myMapView;
 }
 
+
+-(void)ll_mapViewDidFinishLoading:(mapViewDidFinishLoadingBlock)block{
+    _mapViewFinshblock = block;
+}
 
 #pragma mark ================ 和定位相关 ================
 //设置定位相关配置
@@ -311,6 +316,12 @@
 
 
 #pragma mark - BMKMapViewDelegate
+- (void)mapViewDidFinishLoading:(BMKMapView *)mapView {
+    if (_mapViewFinshblock) {
+        _mapViewFinshblock(mapView);
+    }
+}
+
 - (BMKAnnotationView *)mapView:(BMKMapView *)mapView viewForAnnotation:(id <BMKAnnotation>)annotation
 {
     

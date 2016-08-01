@@ -23,10 +23,13 @@ typedef void(^resultBlock)(NSArray *BMKPoiInfoArray, NSString *errorMsg);
 typedef void(^didUpdateBMKUserLocationBlock)(BMKUserLocation *userLocation);
 typedef void(^didUpdateUserHeadingnBlock)(BMKUserLocation *userLocation);
 typedef void(^didFailToLocateUserWithErrorBlock)(NSError *error);
+typedef void(^mapViewDidFinishLoadingBlock)(BMKMapView *mapView);
+
 
 @interface LLBaiDuMapTool : NSObject
 
 - (BMKMapView *)ll_getBMKMapViewWithFrame:(CGRect)myRect setDelegate:(id<BMKMapViewDelegate>)mapDelegate;
+-(void)ll_mapViewDidFinishLoading:(mapViewDidFinishLoadingBlock)block;
 
 - (void)addDelegate;
 - (void)ll_setDelegateNil;
