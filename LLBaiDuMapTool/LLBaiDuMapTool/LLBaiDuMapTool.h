@@ -17,9 +17,6 @@ typedef NS_ENUM(NSInteger, LLBMKPinAnnotationColor) {
 };
 
 typedef void(^resultBlock)(NSArray *BMKPoiInfoArray, NSString *errorMsg);
-
-
-
 typedef void(^didUpdateBMKUserLocationBlock)(BMKUserLocation *userLocation);
 typedef void(^didUpdateUserHeadingnBlock)(BMKUserLocation *userLocation);
 typedef void(^didFailToLocateUserWithErrorBlock)(NSError *error);
@@ -28,6 +25,9 @@ typedef void(^mapViewDidFinishLoadingBlock)(BMKMapView *mapView);
 
 @interface LLBaiDuMapTool : NSObject
 
+/**
+ *  初始化BMKMapView相关
+ */
 - (BMKMapView *)ll_getBMKMapViewWithFrame:(CGRect)myRect setDelegate:(id<BMKMapViewDelegate>)mapDelegate;
 -(void)ll_mapViewDidFinishLoading:(mapViewDidFinishLoadingBlock)block;
 
@@ -40,39 +40,27 @@ typedef void(^mapViewDidFinishLoadingBlock)(BMKMapView *mapView);
 
 
 
-
-
-
-
-
-
-
 //-------------------------- 热力图层,路况,卫星图, --------------------------
 /**
  *  打开/关闭百度城市热力图图层（百度自有数据）
  *
- *  @param _mapView <#_mapView description#>
+ *  @param _mapView 已经创建的BMKMapView对象
  */
 - (void)ll_openOrCloseBaiduHeatMap:(BMKMapView *)_mapView;
 
 /**
  *  打开/关闭公路路况地图
  *
- *  @param _mapView <#_mapView description#>
+ *  @param _mapView 已经创建的BMKMapView对象
  */
 - (void)ll_openOrCloseBaiduTraffic:(BMKMapView *)_mapView;
 
 /**
  *  打开/关闭卫星模式
  *
- *  @param _mapView <#_mapView description#>
+ *  @param _mapView 已经创建的BMKMapView对象
  */
 - (void)ll_openOrCloseBaiduSatelliteType:(BMKMapView *)_mapView;
-
-
-//- (void)ll_getSTr:(NSString *)str andINt:(int)zhenghsu andFloat:(CGFloat)floatNumber andID:(id)idNumber;
-
-
 
 
 

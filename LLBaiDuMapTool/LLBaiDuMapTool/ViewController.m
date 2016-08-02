@@ -56,7 +56,6 @@
     screenW = [UIApplication sharedApplication].keyWindow.bounds.size.width;
     screenH = [UIApplication sharedApplication].keyWindow.bounds.size.height;
     
-    
 }
 
 
@@ -65,13 +64,8 @@
     
     _myBaiDuMapTool = [LLBaiDuMapTool new];
     
-
     [self createMapView];
     [self createBtns];
-    //    [self createAnnotations];
-    
-    
-    
     
 }
 
@@ -98,17 +92,18 @@
     }];
 }
 
+
 //定位
 - (void)localButtonOnClick{
     [_myBaiDuMapTool ll_startUserLocationService];
 }
 
 
-
 //放大地图
 - (void)jiaBtnOnClick{
     [_myBaiDuMapTool ll_addZoomLevelWithChangeNumber:1];
 }
+
 //缩放地图
 - (void)jianBtnOnClick{
     [_myBaiDuMapTool ll_reduceZoomLevelWithChangeNumber:1];
@@ -118,7 +113,6 @@
 // 是否打开热力图
 - (void)heatMapAction
 {
-    
     NSLog(@"%s",__FUNCTION__);
     [_myBaiDuMapTool ll_openOrCloseBaiduHeatMap:_mapView];
 }
@@ -188,8 +182,8 @@
         
         //添加大头针配置参数
         _myBaiDuMapTool.isShowAnimatesDrop = YES;
-        //        _myBaiDuMapTool.pinImageName = @"weibo-lan";
-        //        _myBaiDuMapTool.pinColor = BMKPinAnnotationColorGreen;
+        _myBaiDuMapTool.pinImageName = @"weibo-lan";
+        _myBaiDuMapTool.pinColor = BMKPinAnnotationColorGreen;
         
         
         //********************* 添加大头针一 *********************

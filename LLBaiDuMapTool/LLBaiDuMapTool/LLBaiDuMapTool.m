@@ -152,7 +152,10 @@
 //定位失败后，会调用此函数
 - (void)didFailToLocateUserWithError:(NSError *)error
 {
-    _localFailedblock(error);
+    if (_localFailedblock) {
+        _localFailedblock(error);
+    }
+    
     NSLog(@"%s",__FUNCTION__);
     NSString *errorMessage;
     if ([error code] == kCLErrorDenied)
