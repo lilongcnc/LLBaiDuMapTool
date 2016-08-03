@@ -66,7 +66,6 @@
     
     [self createMapView];
     [self createBtns];
-    
 }
 
 - (void)createMapView
@@ -110,60 +109,11 @@
 }
 
 
-// 是否打开热力图
-- (void)heatMapAction
-{
-    NSLog(@"%s",__FUNCTION__);
-    [_myBaiDuMapTool ll_openOrCloseBaiduHeatMap:_mapView];
-}
 
-// 是否打开路况
-- (void)trafficAction
-{
-    
-    NSLog(@"%s",__FUNCTION__);
-    [_myBaiDuMapTool ll_openOrCloseBaiduTraffic:_mapView];
-    
-}
 
-// 地图类型
-- (void)mapTypeAction
-{
-    
-    NSLog(@"%s",__FUNCTION__);
-    [_myBaiDuMapTool ll_openOrCloseBaiduSatelliteType:_mapView];
-}
 
-- (void)metroAction
-{
-    
-    NSLog(@"%s",__FUNCTION__);
-    
-    //初始化检索对象
-    BMKRouteSearch *routeSearch = [[BMKRouteSearch alloc]init];
-    routeSearch.delegate = self;
-    
-    //发起检索
-    BMKPlanNode* start = [[BMKPlanNode alloc] init] ;
-    start.name = @"上地七街";
-    BMKPlanNode* end = [[BMKPlanNode alloc] init];
-    end.name = @"上地三街";
-    BMKTransitRoutePlanOption *transitRouteSearchOption = [[BMKTransitRoutePlanOption alloc]init];
-    transitRouteSearchOption.city= @"北京市";
-    transitRouteSearchOption.from = start;
-    transitRouteSearchOption.to = end;
-    BOOL flag = [routeSearch transitSearch:transitRouteSearchOption];
-    
-    if(flag)
-    {
-        NSLog(@"bus检索发送成功");
-    }
-    else
-    {
-        NSLog(@"bus检索发送失败");
-    }
-}
 
+//搜索地址
 - (void)searchPalce
 {
     NSLog(@"%s",__FUNCTION__);
@@ -171,22 +121,20 @@
     //城市区域搜索配置信息
     _myBaiDuMapTool.cityPageCapacity = 3; //设置显示搜索结果的数量
     
-    //城市搜索
-    [_myBaiDuMapTool ll_doCitySearchDealWithKey:@"河北" result:^(NSArray *BMKPoiInfoArray, NSString *errorMsg) {
+    //城市搜索(还可以是附近搜索):
+    [_myBaiDuMapTool ll_doCitySearchDealWithKey:@"河北" success:^(NSArray *BMKPoiInfoArray, BMKSearchErrorCode *error, NSString *errorMsg) {
         
         int index = 0;
         for (BMKPoiInfo *item in BMKPoiInfoArray) {
             NSLog(@"%s  %@---%@",__FUNCTION__,item.name,item.address);
         }
         
-        
         //添加大头针配置参数
         _myBaiDuMapTool.isShowAnimatesDrop = YES;
         _myBaiDuMapTool.pinImageName = @"weibo-lan";
         _myBaiDuMapTool.pinColor = BMKPinAnnotationColorGreen;
         
-        
-        //********************* 添加大头针一 *********************
+        //********************* 添加大头针方式一 *********************
         for (BMKPoiInfo *poi in BMKPoiInfoArray) {
             
             CustomBuddleView *customer = [[CustomBuddleView alloc]initWithFrame:CGRectMake(0, 0, 220, 125)];
@@ -201,7 +149,7 @@
         }
         
         
-        //********************* 添加大头针二 *********************
+        //********************* 添加大头针方式二 *********************
         //        NSMutableArray *array = [NSMutableArray array];
         //        NSMutableArray *tempArray = [NSMutableArray arrayWithCapacity:10];
         //        for (BMKPoiInfo *poi in BMKPoiInfoArray) {
@@ -232,166 +180,169 @@
         //        [_myBaiDuMapTool ll_addAnnotationArray:array toMapView:_mapView];
         
         
+    } error:^(BMKSearchErrorCode *error, NSString *errorMsg) {
+        
+        
     }];
+    
+    
     
 }
 
-
-
+//地理编码
 - (void)geocoderAction
 {
     
     NSLog(@"%s",__FUNCTION__);
     
-    BMKGeoCodeSearch *geocoderSearcher =[[BMKGeoCodeSearch alloc]init];
-    geocoderSearcher.delegate = self;
-    BMKGeoCodeSearchOption *geoCodeSearchOption = [[BMKGeoCodeSearchOption alloc]init];
-    geoCodeSearchOption.city= @"上海市";
-    geoCodeSearchOption.address = @"田子坊";
-    BOOL flag = [geocoderSearcher geoCode:geoCodeSearchOption];
-    if (flag)
-    {
-        NSLog(@"geo检索发送成功");
-    }
-    else
-    {
-        NSLog(@"geo检索发送失败");
-    }
+    [_myBaiDuMapTool ll_geoCodeSearchWithCity:@"上海市" withAddress:@"田子坊" success:^(BMKGeoCodeResult *result, BMKSearchErrorCode *error, NSString *errorMsg) {
+        
+        
+        // 移除之前的大头针
+        [_myBaiDuMapTool ll_removeAnimations:_mapView.annotations fromMapVirew:_mapView];
+        // 添加大头针
+        [_myBaiDuMapTool ll_addAnnotationWithCoodinate:CLLocationCoordinate2DMake(result.location.latitude, result.location.longitude)
+                                             withTitle:result.address
+                                           andSubTitle:nil
+                                             toMapView:_mapView];
+        
+        
+    } error:^(BMKSearchErrorCode *error, NSString *errorMsg) {
+        
+    }];
+    
+
     
 }
 
+//反地理编码
 - (void)reverseGeocoderAction
 {
     
     NSLog(@"%s",__FUNCTION__);
     
-    //    (latitude = 31.214260914625513, longitude = 121.47498064783355)
-    //    乌镇: 东经120°54′,北纬30°64′
+//    (latitude = 31.214260914625513, longitude = 121.47498064783355)
+//    乌镇: 东经120°54′,北纬30°64′
     
-    BMKGeoCodeSearch *geocoderSearcher =[[BMKGeoCodeSearch alloc]init];
-    geocoderSearcher.delegate = self;
+    CLLocationCoordinate2D cllocationCoordinate2D  = (CLLocationCoordinate2D){30.5, 120.5};
     
-    //发起反向地理编码检索
-    CLLocationCoordinate2D pt = (CLLocationCoordinate2D){30.5, 120.5};
-    BMKReverseGeoCodeOption *reverseGeoCodeSearchOption = [[BMKReverseGeoCodeOption alloc] init];
-    reverseGeoCodeSearchOption.reverseGeoPoint = pt;
-    BOOL flag = [geocoderSearcher reverseGeoCode:reverseGeoCodeSearchOption];
-    if(flag)
-    {
-        NSLog(@"反geo检索发送成功");
-    }
-    else
-    {
-        NSLog(@"反geo检索发送失败");
-    }
+    [_myBaiDuMapTool ll_reverseGeoCodeSearchWith:cllocationCoordinate2D success:^(BMKReverseGeoCodeResult *result, BMKSearchErrorCode *error, NSString *errorMsg) {
+        
+        //发起周边检索
+        [_myBaiDuMapTool ll_doNearBySearchDealWithKey:@"乌镇" andNearByCenter:result.location success:^(NSArray *BMKPoiInfoArray, BMKSearchErrorCode *error, NSString *errorMsg) {
+            NSLog(@"%s  %@",__FUNCTION__,BMKPoiInfoArray);
+        } error:^(BMKSearchErrorCode *error, NSString *errorMsg) {
+            NSLog(@"%s  %@",__FUNCTION__,errorMsg);
+            
+        }];
+        
+    } error:^(BMKSearchErrorCode *error, NSString *errorMsg) {
+        
+    }];
     
+    
+    
+
 }
 
-- (void)obtainBundleIdentifier
+
+// 是否打开热力图
+- (void)heatMapAction
 {
-    
     NSLog(@"%s",__FUNCTION__);
-    NSString *bundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
-    NSLog(@"%@", bundleIdentifier);
+    [_myBaiDuMapTool ll_openOrCloseBaiduHeatMap:_mapView];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-
-
-
-#pragma mark - BMKRouteSearchDelegate
--(void)onGetTransitRouteResult:(BMKRouteSearch*)searcher result:(BMKTransitRouteResult*)result
-                     errorCode:(BMKSearchErrorCode)error
+// 是否打开交通路况
+- (void)trafficAction
 {
-    
-    
     NSLog(@"%s",__FUNCTION__);
+    [_myBaiDuMapTool ll_openOrCloseBaiduTraffic:_mapView];
     
-    if (error == BMK_SEARCH_NO_ERROR) {
-        //在此处理正常结果
-        
-        for (BMKTransitRouteLine *line in result.routes) {
-            //            ///路线长度 单位： 米
-            //            @property (nonatomic) int distance;
-            //            ///路线耗时 单位： 秒
-            //            @property (nonatomic, strong) BMKTime* duration;
-            //            ///路线起点信息
-            //            @property (nonatomic, strong) BMKRouteNode* starting;
-            //            ///路线终点信息
-            //            @property (nonatomic, strong) BMKRouteNode* terminal;
-            NSString *routeDescription = [NSString stringWithFormat:@"路程长度: %d\n路线耗时: %d小时%d分%d秒", line.distance, line.duration.hours, line.duration.minutes, line.duration.seconds];
-            NSLog(@"%@", routeDescription);
-        }
-    }
-    else if (error == BMK_SEARCH_AMBIGUOUS_ROURE_ADDR){
-        //当路线起终点有歧义时通，获取建议检索起终点
-        //result.routeAddrResult
-    }
-    else {
-        NSLog(@"抱歉，未找到结果");
-    }
 }
 
-#pragma mark - BMKGeoCodeSearchDelegate
-- (void)onGetGeoCodeResult:(BMKGeoCodeSearch *)searcher result:(BMKGeoCodeResult *)result errorCode:(BMKSearchErrorCode)error
+// 卫星图切换
+- (void)mapTypeAction
 {
-    
     NSLog(@"%s",__FUNCTION__);
-    
-    if (error == BMK_SEARCH_NO_ERROR) {
-        //在此处理正常结果
-        
-        // 创建大头针
-        BMKPointAnnotation *anno = [[BMKPointAnnotation alloc] init];
-        anno.coordinate = CLLocationCoordinate2DMake(result.location.latitude, result.location.longitude);
-        anno.title = result.address;
-        
-        // 移除之前的大头针
-        [_mapView removeAnnotations:_mapView.annotations];
-        // 添加到地图上
-        [_mapView addAnnotation:anno];
-        
-    }
-    else {
-        NSLog(@"抱歉，未找到结果");
-    }
-}
-
-// 接收反向地理编码结果
-- (void)onGetReverseGeoCodeResult:(BMKGeoCodeSearch *)searcher result:(BMKReverseGeoCodeResult *)result
-                        errorCode:(BMKSearchErrorCode)error {
-    
-    //
-    //    NSLog(@"%s",__FUNCTION__);
-    //
-    //
-    //  if (error == BMK_SEARCH_NO_ERROR) {
-    //
-    //      // 在此处理正常结果
-    //      NSLog(@"%@", result.address);
-    //
-    //      //发起检索
-    //      BMKNearbySearchOption *option = [[BMKNearbySearchOption alloc]init];
-    //      option.pageCapacity = 10;
-    //      option.location = result.location;
-    //      option.keyword = @"乌镇";
-    //      BOOL flag = [_searcher poiSearchNearBy:option];
-    //      if (flag)
-    //      {
-    //          NSLog(@"周边检索发送成功");
-    //      }
-    //
-    //  }
-    //  else {
-    //      NSLog(@"抱歉，未找到结果");
-    //  }
+    [_myBaiDuMapTool ll_openOrCloseBaiduSatelliteType:_mapView];
 }
 
 
+
+
+
+#pragma mark ================ BMKRouteSearch:公交/开车/步行线路:未封装 ================
+////公交线路
+//- (void)metroAction
+//{
+//    
+//    NSLog(@"%s",__FUNCTION__);
+//    
+//    //初始化检索对象
+//    BMKRouteSearch *routeSearch = [[BMKRouteSearch alloc]init];
+//    routeSearch.delegate = self;
+//    
+//    //发起检索
+//    BMKPlanNode* start = [[BMKPlanNode alloc] init] ;
+//    start.name = @"上地七街";
+//    BMKPlanNode* end = [[BMKPlanNode alloc] init];
+//    end.name = @"上地三街";
+//    BMKTransitRoutePlanOption *transitRouteSearchOption = [[BMKTransitRoutePlanOption alloc]init];
+//    transitRouteSearchOption.city= @"北京市";
+//    transitRouteSearchOption.from = start;
+//    transitRouteSearchOption.to = end;
+//    BOOL flag = [routeSearch transitSearch:transitRouteSearchOption];
+//    
+//    if(flag)
+//    {
+//        NSLog(@"bus检索发送成功");
+//    }
+//    else
+//    {
+//        NSLog(@"bus检索发送失败");
+//    }
+//}
+//
+//#pragma mark - BMKRouteSearchDelegate
+//-(void)onGetTransitRouteResult:(BMKRouteSearch*)searcher result:(BMKTransitRouteResult*)result
+//                     errorCode:(BMKSearchErrorCode)error
+//{
+//    
+//    
+//    NSLog(@"%s",__FUNCTION__);
+//    
+//    if (error == BMK_SEARCH_NO_ERROR) {
+//        //在此处理正常结果
+//        
+//        for (BMKTransitRouteLine *line in result.routes) {
+//            //            ///路线长度 单位： 米
+//            //            @property (nonatomic) int distance;
+//            //            ///路线耗时 单位： 秒
+//            //            @property (nonatomic, strong) BMKTime* duration;
+//            //            ///路线起点信息
+//            //            @property (nonatomic, strong) BMKRouteNode* starting;
+//            //            ///路线终点信息
+//            //            @property (nonatomic, strong) BMKRouteNode* terminal;
+//            NSString *routeDescription = [NSString stringWithFormat:@"路程长度: %d\n路线耗时: %d小时%d分%d秒", line.distance, line.duration.hours, line.duration.minutes, line.duration.seconds];
+//            NSLog(@"%@", routeDescription);
+//        }
+//    }
+//    else if (error == BMK_SEARCH_AMBIGUOUS_ROURE_ADDR){
+//        //当路线起终点有歧义时通，获取建议检索起终点
+//        //result.routeAddrResult
+//    }
+//    else {
+//        NSLog(@"抱歉，未找到结果");
+//    }
+//}
+
+
+
+
+
+
+#pragma mark ================ UI部分 ================
 
 - (void)createBtns
 {
@@ -401,7 +352,7 @@
     UIButton *mapTypeButton = [MyUtility createButtonWithFrame:CGRectMake(220, 30, 60, 20) title:@"卫星图" backgroundImageName:nil target:self action:@selector(mapTypeAction)];
     UIButton *trafficButton = [MyUtility createButtonWithFrame:CGRectMake(10, 60, 60, 20) title:@"路况" backgroundImageName:nil target:self action:@selector(trafficAction)];
     UIButton *heatMapButton = [MyUtility createButtonWithFrame:CGRectMake(80, 60, 60, 20) title:@"热力图" backgroundImageName:nil target:self action:@selector(heatMapAction)];
-    UIButton *metroButton = [MyUtility createButtonWithFrame:CGRectMake(150, 60, 60, 20) title:@"公交" backgroundImageName:nil target:self action:@selector(metroAction)];
+//    UIButton *metroButton = [MyUtility createButtonWithFrame:CGRectMake(150, 60, 60, 20) title:@"公交" backgroundImageName:nil target:self action:@selector(metroAction)];
     UIButton *localButton = [MyUtility createButtonWithFrame:CGRectMake(15, self.view.frame.size.height-35-50, 45, 45) title:@"" backgroundImageName:@"dingwei2" target:self action:@selector(localButtonOnClick)];
     
     
@@ -430,12 +381,17 @@
     [self.view addSubview:mapTypeButton];
     [self.view addSubview:trafficButton];
     [self.view addSubview:heatMapButton];
-    [self.view addSubview:metroButton];
+//    [self.view addSubview:metroButton];
     [self.view addSubview:localButton];
     [self.view addSubview:jiajian];
 }
 
 
 
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
 
 @end

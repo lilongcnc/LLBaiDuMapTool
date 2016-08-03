@@ -16,7 +16,22 @@ typedef NS_ENUM(NSInteger, LLBMKPinAnnotationColor) {
     LLBMKPinAnnotationColorPurple
 };
 
-typedef void(^resultBlock)(NSArray *BMKPoiInfoArray, NSString *errorMsg);
+//搜索
+typedef void(^searchOptionResultSuccessBlock)(NSArray *BMKPoiInfoArray, BMKSearchErrorCode *error, NSString *errorMsg);
+typedef void(^searchOptionResultErrorBlock)(BMKSearchErrorCode *error,NSString *errorMsg);
+
+//地理编码
+typedef void(^getGeoCodeResultSuccessBlock)(BMKGeoCodeResult *result, BMKSearchErrorCode *error, NSString *errorMsg);
+typedef void(^getGeoCodeResultErrorBlock)(BMKSearchErrorCode *error,NSString *errorMsg);
+
+//反地理编码
+typedef void(^getReverseGeoCodeResultSuccessBlock)(BMKReverseGeoCodeResult *result, BMKSearchErrorCode *error, NSString *errorMsg);
+typedef void(^getReverseGeoCodeResultErrorBlock)(BMKSearchErrorCode *error,NSString *errorMsg);
+
+
+
+
+
 typedef void(^didUpdateBMKUserLocationBlock)(BMKUserLocation *userLocation);
 typedef void(^didUpdateUserHeadingnBlock)(BMKUserLocation *userLocation);
 typedef void(^didFailToLocateUserWithErrorBlock)(NSError *error);
@@ -80,7 +95,8 @@ typedef void(^mapViewDidFinishLoadingBlock)(BMKMapView *mapView);
  */
 @property (nonatomic,assign) int cityPpageIndex;
 @property (nonatomic,assign) int cityPageCapacity; //在调用方法前赋值
--(void)ll_doNearBySearchDealWithKey:(NSString *)keyWord andNearByCenter:(CLLocationCoordinate2D)center result:(resultBlock)block;
+-(void)ll_doNearBySearchDealWithKey:(NSString *)keyWord andNearByCenter:(CLLocationCoordinate2D)center success:(searchOptionResultSuccessBlock)successBlock error:(searchOptionResultErrorBlock)errorBlock;
+
 
 
 
@@ -92,7 +108,7 @@ typedef void(^mapViewDidFinishLoadingBlock)(BMKMapView *mapView);
  */
 @property (nonatomic,assign) int nearByPpageIndex;
 @property (nonatomic,assign) int nearByPageCapacity; //在调用方法前赋值
--(void)ll_doCitySearchDealWithKey:(NSString *)keyWord result:(resultBlock)block;
+-(void)ll_doCitySearchDealWithKey:(NSString *)keyWord success:(searchOptionResultSuccessBlock)successBlock error:(searchOptionResultErrorBlock)errorBlock;
 
 
 
@@ -145,6 +161,25 @@ typedef void(^mapViewDidFinishLoadingBlock)(BMKMapView *mapView);
 
 
 
+//-------------------------- 地理编码和反地理编码 --------------------------
+/**
+ *  地理编码
+ *
+ *  @param cityStr      城市
+ *  @param addressStr   地区
+ *  @param successBlock 成功回调
+ *  @param errorBlock   失败回调
+ */
+- (void)ll_geoCodeSearchWithCity:(NSString *)cityStr withAddress:(NSString *)addressStr success:(getGeoCodeResultSuccessBlock)successBlock error:(getGeoCodeResultErrorBlock)errorBlock;
+
+/**
+ *  反地理编码
+ *
+ *  @param cllocationCoordinate2D 地理位置
+ *  @param successBlock           成功回调
+ *  @param errorBlock             反地理回调
+ */
+- (void)ll_reverseGeoCodeSearchWith:(CLLocationCoordinate2D)cllocationCoordinate2D success:(getReverseGeoCodeResultSuccessBlock)successBlock error:(getReverseGeoCodeResultErrorBlock)errorBlock;
 
 
 

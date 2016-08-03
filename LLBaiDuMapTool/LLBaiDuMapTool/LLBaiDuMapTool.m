@@ -20,7 +20,20 @@
 
 @property (nonatomic,strong) BMKLocationService *myLocalSever;
 
-@property (nonatomic, copy) resultBlock block;
+
+//搜索
+@property (nonatomic, copy) searchOptionResultSuccessBlock searchOptionSuccessBlock;
+@property (nonatomic, copy) searchOptionResultErrorBlock searchOptionErrorBlock;
+
+//地理编码
+@property (nonatomic, copy) getGeoCodeResultSuccessBlock getGeoCodeSuccessBlock;
+@property (nonatomic, copy) getGeoCodeResultErrorBlock getGeoCodeErrorBlock;
+
+//反地理编码
+@property (nonatomic, copy) getReverseGeoCodeResultSuccessBlock getReverseGeoCodeSuccessBlock;
+@property (nonatomic, copy) getReverseGeoCodeResultErrorBlock getReverseGeoCodeErrorBlock;
+
+
 @property (nonatomic, copy) didUpdateBMKUserLocationBlock localblock;
 @property (nonatomic, copy) didUpdateUserHeadingnBlock headingblock;
 @property (nonatomic, copy) didFailToLocateUserWithErrorBlock localFailedblock;
@@ -75,6 +88,8 @@
 -(void)ll_mapViewDidFinishLoading:(mapViewDidFinishLoadingBlock)block{
     _mapViewFinshblock = block;
 }
+
+
 
 #pragma mark ================ 和定位相关 ================
 //设置定位相关配置
@@ -156,6 +171,7 @@
         _localFailedblock(error);
     }
     
+    //默认处理
     NSLog(@"%s",__FUNCTION__);
     NSString *errorMessage;
     if ([error code] == kCLErrorDenied)
@@ -245,9 +261,15 @@
 
 
 
--(void)ll_doCitySearchDealWithKey:(NSString *)keyWord result:(resultBlock)block{
+
+
+#pragma mark ================ 搜索之城市搜索 ================
+-(void)ll_doCitySearchDealWithKey:(NSString *)keyWord  success:(searchOptionResultSuccessBlock)successBlock error:(searchOptionResultErrorBlock)errorBlock{
     
-   self.block = block;
+    self.searchOptionSuccessBlock = successBlock;
+    self.searchOptionErrorBlock = errorBlock;
+    
+    
     NSLog(@"城市检索");
     BMKCitySearchOption* cityOption=[[BMKCitySearchOption alloc]init];
     cityOption.keyword = keyWord;
@@ -261,15 +283,18 @@
     }
     else
     {
-        block(nil, @"周边检索发送失败");
+        self.searchOptionErrorBlock(nil,@"周边检索发送失败");
     }
 
 }
 
 
--(void)ll_doNearBySearchDealWithKey:(NSString *)keyWord andNearByCenter:(CLLocationCoordinate2D)center result:(resultBlock)block{
+#pragma mark ================ 搜索之周边搜索 ================
+-(void)ll_doNearBySearchDealWithKey:(NSString *)keyWord andNearByCenter:(CLLocationCoordinate2D)center success:(searchOptionResultSuccessBlock)successBlock error:(searchOptionResultErrorBlock)errorBlock{
     
-    self.block = block;
+    
+    self.searchOptionSuccessBlock = successBlock;
+    self.searchOptionErrorBlock = errorBlock;
     
     NSLog(@"周边检索");
     //发起检索
@@ -287,20 +312,62 @@
     }
     else
     {
-        block(nil, @"周边检索发送失败");
+        self.searchOptionErrorBlock(nil,@"周边检索发送失败");
     }
 }
 
-//移除一组标注
+#pragma mark - BMKPoiSearchDelegate
+/**
+ *  实现PoiSearchDeleage处理回调结果
+ *
+ *  @param searcher      poi搜索
+ *  @param poiResultList 搜索结果
+ *  @param error         错误吗
+ */
+- (void)onGetPoiResult:(BMKPoiSearch*)searcher result:(BMKPoiResult*)poiResultList errorCode:(BMKSearchErrorCode)error
+{
+    if (error == BMK_SEARCH_NO_ERROR) {
+        //在此处理正常结果
+        self.searchOptionSuccessBlock(poiResultList.poiInfoList,&error,@"成功搜索到结果");
+    }
+    else if (error == BMK_SEARCH_AMBIGUOUS_KEYWORD){
+        //当在设置城市未找到结果，但在其他城市找到结果时，回调建议检索城市列表
+        // result.cityList;
+        self.searchOptionErrorBlock(&error,@"起始点有歧义");
+    } else {
+        self.searchOptionErrorBlock(&error,@"抱歉，未找到结果");
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#pragma mark ================ 大头针操作 ================
+//移除数组内所有的大头针标注
 - (void)ll_removeAnimations:(NSArray *)annotationArray fromMapVirew:(BMKMapView *)mapView{
     [mapView removeAnnotations:annotationArray];
 }
 
-//移除标注
+//移除单个大头针标注
 - (void)ll_removeAnimation:(id<BMKAnnotation>)annotation fromMapVirew:(BMKMapView *)mapView{
     [mapView removeAnnotation:annotation];
 }
 
+//增加一个大头针
 - (void)ll_addAnnotationWithCoodinate:(CLLocationCoordinate2D)coor withTitle:(NSString *)title andSubTitle:(NSString *)subTitle toMapView:(BMKMapView *)mapView
 {
     NSLog(@"%s",__FUNCTION__);
@@ -311,7 +378,7 @@
     [mapView addAnnotation:annotation];
 }
 
-
+//增加一组大头针
 - (void)ll_addAnnotationArray:(NSArray *)annotationArray toMapView:(BMKMapView *)mapView
 {
     [mapView addAnnotations:annotationArray];
@@ -325,6 +392,7 @@
     }
 }
 
+//自定义大头针
 - (BMKAnnotationView *)mapView:(BMKMapView *)mapView viewForAnnotation:(id <BMKAnnotation>)annotation
 {
     
@@ -349,7 +417,6 @@
                 showBMKViewIndex++;
             }else if(_paopaoBMKActionPaopaoView && _paopaoBMKActionPaopaoViewArray ){
                 [NSException raise:@"From LLBaiDuMapTool:mapView:viewForAnnotation" format:@"Don't set values of `_paopaoBMKActionPaopaoView` and `_paopaoBMKActionPaopaoViewArray` at the same time."];
-                
             }
 
         
@@ -359,41 +426,102 @@
     return nil;
 }
 
-#pragma mark - BMKPoiSearchDelegate
 
-/**
- *  实现PoiSearchDeleage处理回调结果
- *
- *  @param searcher      poi搜索
- *  @param poiResultList 搜索结果
- *  @param error         错误吗
- */
-- (void)onGetPoiResult:(BMKPoiSearch*)searcher result:(BMKPoiResult*)poiResultList errorCode:(BMKSearchErrorCode)error
+
+
+
+
+
+
+
+
+//地理解析
+- (void)ll_geoCodeSearchWithCity:(NSString *)cityStr withAddress:(NSString *)addressStr success:(getGeoCodeResultSuccessBlock)successBlock error:(getGeoCodeResultErrorBlock)errorBlock{
+    
+    self.getGeoCodeSuccessBlock = successBlock;
+    self.getGeoCodeErrorBlock = errorBlock;
+    
+    
+    BMKGeoCodeSearch *geocoderSearcher =[[BMKGeoCodeSearch alloc]init];
+    geocoderSearcher.delegate = self;
+    
+    BMKGeoCodeSearchOption *geoCodeSearchOption = [[BMKGeoCodeSearchOption alloc]init];
+    geoCodeSearchOption.city= cityStr;
+    geoCodeSearchOption.address = addressStr;
+    
+    BOOL flag = [geocoderSearcher geoCode:geoCodeSearchOption];
+    if (flag)
+    {
+        NSLog(@"geo检索发送成功");
+    }
+    else
+    {
+        self.getGeoCodeErrorBlock(nil,@"geo检索发送失败");
+    }
+}
+
+
+//反地理解析
+- (void)ll_reverseGeoCodeSearchWith:(CLLocationCoordinate2D)cllocationCoordinate2D success:(getReverseGeoCodeResultSuccessBlock)successBlock error:(getReverseGeoCodeResultErrorBlock)errorBlock{
+
+    self.getReverseGeoCodeSuccessBlock = successBlock;
+    self.getReverseGeoCodeErrorBlock = errorBlock;
+    
+    
+    BMKGeoCodeSearch *geocoderSearcher =[[BMKGeoCodeSearch alloc]init];
+    geocoderSearcher.delegate = self;
+    
+    //发起反向地理编码检索
+    BMKReverseGeoCodeOption *reverseGeoCodeSearchOption = [[BMKReverseGeoCodeOption alloc] init];
+    reverseGeoCodeSearchOption.reverseGeoPoint = cllocationCoordinate2D;
+    BOOL flag = [geocoderSearcher reverseGeoCode:reverseGeoCodeSearchOption];
+    if(flag)
+    {
+        NSLog(@"反geo检索发送成功");
+    }
+    else
+    {
+        self.getReverseGeoCodeErrorBlock(nil,@"反geo检索发送失败");
+    }
+}
+
+#pragma mark - 地理编码和反地理编码: BMKGeoCodeSearchDelegate
+//接收地理编码结果
+- (void)onGetGeoCodeResult:(BMKGeoCodeSearch *)searcher result:(BMKGeoCodeResult *)result errorCode:(BMKSearchErrorCode)error
 {
+    
+    NSLog(@"%s",__FUNCTION__);
     if (error == BMK_SEARCH_NO_ERROR) {
         //在此处理正常结果
-        self.block(poiResultList.poiInfoList, nil);
+        self.getGeoCodeSuccessBlock(result,&error,@"成功接收地理编码结果");
     }
-    else if (error == BMK_SEARCH_AMBIGUOUS_KEYWORD){
-        //当在设置城市未找到结果，但在其他城市找到结果时，回调建议检索城市列表
-        // result.cityList;
-        self.block(nil, @"起始点有歧义");
-    } else {
-        self.block(nil, @"抱歉，未找到结果");
+    else {
+        NSLog(@"抱歉，未找到结果");
+        self.getGeoCodeErrorBlock(&error,@"抱歉，未找到结果");
     }
 }
 
 
 
 
+// 接收反向地理编码结果
+- (void)onGetReverseGeoCodeResult:(BMKGeoCodeSearch *)searcher result:(BMKReverseGeoCodeResult *)result
+                        errorCode:(BMKSearchErrorCode)error {
+    
+
+        NSLog(@"%s",__FUNCTION__);
 
 
-
-
-
-
-
-
+      if (error == BMK_SEARCH_NO_ERROR) {
+          // 在此处理正常结果
+          NSLog(@"%@", result.address);
+          self.getReverseGeoCodeSuccessBlock(result,&error,@"成功接收反向地理编码结果");
+          
+      }
+      else {
+          self.getReverseGeoCodeErrorBlock(nil,@"抱歉，未找到结果");
+      }
+}
 
 
 
