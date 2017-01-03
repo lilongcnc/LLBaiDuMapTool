@@ -351,6 +351,7 @@
 				TargetAttributes = {
 					89E59A161D4B4E6900DBB7E0 = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = ZHR3SCPQ6E;
 					};
 					89E59A2F1D4B4E6900DBB7E0 = {
 						CreatedOnToolsVersion = 7.3;
@@ -569,6 +570,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = ZHR3SCPQ6E;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/LLBaiDuMapTool",
@@ -586,6 +588,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = ZHR3SCPQ6E;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/LLBaiDuMapTool",

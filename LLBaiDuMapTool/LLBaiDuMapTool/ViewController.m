@@ -22,13 +22,13 @@
 
 
 @property (nonatomic,strong) LLBaiDuMapTool *myBaiDuMapTool;
+@property (nonatomic,strong) UILabel *myTipLabel;
+@property (nonatomic,strong) UILabel *myTipLabel2;
 
 @end
 
-@implementation ViewController{
-    CGFloat screenW;
-    CGFloat screenH;
-}
+@implementation ViewController
+
 // 百度地图SDK中提供了定位功能和动画效果，v2.0.0版本开始使用OpenGL渲染，因此您需要在您的Xcode工程中引入CoreLocation.framework和QuartzCore.framework、OpenGLES.framework、SystemConfiguration.framework、CoreGraphics.framework、Security.framework。添加方式：在Xcode的Project -> Active Target ->Build Phases ->Link Binary With Libraries，添加这几个framework即可。
 // 在TARGETS->Build Settings->Other Linker Flags 中添加-ObjC。
 // 引入mapapi.bundle资源文件
@@ -50,15 +50,6 @@
 }
 
 
--(void)viewDidAppear:(BOOL)animated{
-    [super viewDidAppear:animated];
-    
-    screenW = [UIApplication sharedApplication].keyWindow.bounds.size.width;
-    screenH = [UIApplication sharedApplication].keyWindow.bounds.size.height;
-    
-}
-
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -66,7 +57,31 @@
     
     [self createMapView];
     [self createBtns];
+    [self createCoverTips];
 }
+
+- (void)createCoverTips{
+    
+    UIView *tipView = [[UIView alloc] initWithFrame:(CGRect){kScreenWidth-210,kScreenHeight-105,200,90}];
+    tipView.backgroundColor = [UIColor whiteColor];
+    _myTipLabel = ({
+        UILabel *label = [MyUtility createLabelWithFrame:(CGRect){10,10,tipView.frame.size.width-20,35} title:@"111" font:[UIFont systemFontOfSize:12.00]];
+        label.numberOfLines = 0;
+        label.textColor = [UIColor blackColor];
+        [tipView addSubview:label];
+        label;
+    });
+    _myTipLabel2 = ({
+        UILabel *label = [MyUtility createLabelWithFrame:(CGRect){10,_myTipLabel.frame.origin.y+10,tipView.frame.size.width-20,35} title:@"---" font:[UIFont systemFontOfSize:12.00]];
+        label.numberOfLines = 0;
+        label.textColor = [UIColor blackColor];
+        [tipView addSubview:label];
+        label;
+    });
+    
+    [self.view addSubview:tipView];
+}
+
 
 - (void)createMapView
 {
@@ -83,11 +98,15 @@
     [_myBaiDuMapTool ll_startUserLocationService];
     [_myBaiDuMapTool ll_didUpdateBMKUserLocation:^(BMKUserLocation *userLocation) {
         NSLog(@"%s %f,long %f",__FUNCTION__,userLocation.location.coordinate.latitude,userLocation.location.coordinate.longitude);
+        NSString *updateLocation = [NSString stringWithFormat:@"userLocation: %f,%f",userLocation.location.coordinate.latitude,userLocation.location.coordinate.longitude];
+        _myTipLabel.text = updateLocation;
         
     }];
     
     [_myBaiDuMapTool ll_didUpdateUserHeadingn:^(BMKUserLocation *userLocation) {
         NSLog(@"%s heading is %@",__FUNCTION__,userLocation.heading);
+        NSString *headingLocation = [NSString stringWithFormat:@"%@",userLocation.heading];
+        _myTipLabel2.text = headingLocation;
     }];
 }
 
