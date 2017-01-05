@@ -6,11 +6,11 @@
 //
 //
 
-#import "LLBaiDuMapTool.h"
+#import "LLBaiDuMapManager.h"
 #import "CustomBuddleView.h"
 
 
-@interface LLBaiDuMapTool()
+@interface LLBaiDuMapManager()
 //<BMKPoiSearchDelegate>//, BNNaviRoutePlanDelegate
 <BMKPoiSearchDelegate,BMKMapViewDelegate, BMKPoiSearchDelegate, BMKRouteSearchDelegate, BMKGeoCodeSearchDelegate,BMKLocationServiceDelegate>
 
@@ -42,7 +42,7 @@
 @end
 
 
-@implementation LLBaiDuMapTool{
+@implementation LLBaiDuMapManager{
     int showBMKViewIndex;
 }
 

@@ -1,6 +1,6 @@
 //
 //  ViewController.m
-//  LLBaiDuMapTool
+//  LLBaiDuMapManager
 //
 //  Created by 李龙 on 16/7/29.
 //  Copyright © 2016年 李龙. All rights reserved.
@@ -10,7 +10,7 @@
 #import "Constant.h"
 #import "MyUtility.h"
 #import "ZYHTBaiduMap.h"
-#import "LLBaiDuMapTool.h"
+#import "LLBaiDuMapManager.h"
 #import "CustomBuddleView.h"
 
 
@@ -44,14 +44,14 @@
     
     [super viewWillDisappear:animated];
     
-    [[LLBaiDuMapTool sharedInstance] ll_setDelegateNil];
+    [[LLBaiDuMapManager sharedInstance] ll_setDelegateNil];
 }
 
 
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    [[LLBaiDuMapTool sharedInstance] addDelegate];
+    [[LLBaiDuMapManager sharedInstance] addDelegate];
 }
 
 
@@ -68,24 +68,24 @@
 - (void)createMapView
 {
     
-    _mapView = [[LLBaiDuMapTool sharedInstance] ll_getBMKMapViewWithFrame:CGRectMake(0, 100, kScreenWidth, kScreenHeight - 100) setDelegate:nil];
+    _mapView = [[LLBaiDuMapManager sharedInstance] ll_getBMKMapViewWithFrame:CGRectMake(0, 100, kScreenWidth, kScreenHeight - 100) setDelegate:nil];
     //加载地图完成
-    [[LLBaiDuMapTool sharedInstance] ll_mapViewDidFinishLoading:^(BMKMapView *mapView) {
+    [[LLBaiDuMapManager sharedInstance] ll_mapViewDidFinishLoading:^(BMKMapView *mapView) {
         
         ULog(@"BMKMapView控件初始化完成");
     }];
     [self.view addSubview:_mapView];
     
-    [[LLBaiDuMapTool sharedInstance] ll_setUserLocationServiceConfig];
-    [[LLBaiDuMapTool sharedInstance] ll_startUserLocationService];
-    [[LLBaiDuMapTool sharedInstance] ll_didUpdateBMKUserLocation:^(BMKUserLocation *userLocation) {
+    [[LLBaiDuMapManager sharedInstance] ll_setUserLocationServiceConfig];
+    [[LLBaiDuMapManager sharedInstance] ll_startUserLocationService];
+    [[LLBaiDuMapManager sharedInstance] ll_didUpdateBMKUserLocation:^(BMKUserLocation *userLocation) {
         NSLog(@"%s %f,long %f",__FUNCTION__,userLocation.location.coordinate.latitude,userLocation.location.coordinate.longitude);
         NSString *updateLocation = [NSString stringWithFormat:@"userLocation: %f,%f",userLocation.location.coordinate.latitude,userLocation.location.coordinate.longitude];
         _myTipLabel.text = updateLocation;
         
     }];
     
-    [[LLBaiDuMapTool sharedInstance] ll_didUpdateUserHeadingn:^(BMKUserLocation *userLocation) {
+    [[LLBaiDuMapManager sharedInstance] ll_didUpdateUserHeadingn:^(BMKUserLocation *userLocation) {
         NSLog(@"%s heading is %@",__FUNCTION__,userLocation.heading);
         NSString *headingLocation = [NSString stringWithFormat:@"%@",userLocation.heading];
         _myTipLabel2.text = headingLocation;
@@ -95,19 +95,19 @@
 
 //定位
 - (void)localButtonOnClick{
-    [[LLBaiDuMapTool sharedInstance] ll_startUserLocationService];
+    [[LLBaiDuMapManager sharedInstance] ll_startUserLocationService];
 }
 
 
 //放大地图
 - (void)jiaBtnOnClick{
-    [[LLBaiDuMapTool sharedInstance] ll_addZoomLevelWithChangeNumber:1];
+    [[LLBaiDuMapManager sharedInstance] ll_addZoomLevelWithChangeNumber:1];
 }
 
 //缩放地图
 - (void)jianBtnOnClick{
     
-    [[LLBaiDuMapTool sharedInstance] ll_reduceZoomLevelWithChangeNumber:1];
+    [[LLBaiDuMapManager sharedInstance] ll_reduceZoomLevelWithChangeNumber:1];
 }
 
 
@@ -123,10 +123,10 @@
     
     
     //城市区域搜索配置信息
-    [LLBaiDuMapTool sharedInstance].cityPageCapacity = 3; //设置显示搜索结果的数量
+    [LLBaiDuMapManager sharedInstance].cityPageCapacity = 3; //设置显示搜索结果的数量
     
     //城市搜索(还可以是附近搜索):
-    [[LLBaiDuMapTool sharedInstance] ll_doCitySearchDealWithKey:@"河北" success:^(NSArray *BMKPoiInfoArray, BMKSearchErrorCode *error, NSString *errorMsg) {
+    [[LLBaiDuMapManager sharedInstance] ll_doCitySearchDealWithKey:@"河北" success:^(NSArray *BMKPoiInfoArray, BMKSearchErrorCode *error, NSString *errorMsg) {
         
         int index = 0;
         for (BMKPoiInfo *item in BMKPoiInfoArray) {
@@ -134,19 +134,19 @@
         }
         
         //添加大头针配置参数
-        [LLBaiDuMapTool sharedInstance].isShowAnimatesDrop = YES;
-        [LLBaiDuMapTool sharedInstance].pinImageName = @"weibo-lan";
-        [LLBaiDuMapTool sharedInstance].pinColor = BMKPinAnnotationColorGreen;
+        [LLBaiDuMapManager sharedInstance].isShowAnimatesDrop = YES;
+        [LLBaiDuMapManager sharedInstance].pinImageName = @"weibo-lan";
+        [LLBaiDuMapManager sharedInstance].pinColor = BMKPinAnnotationColorGreen;
         
         //********************* 添加大头针方式一 *********************
         for (BMKPoiInfo *poi in BMKPoiInfoArray) {
             
             CustomBuddleView *customer = [[CustomBuddleView alloc]initWithFrame:CGRectMake(0, 0, 220, 125)];
             customer.customerName = [NSString stringWithFormat:@"----->%d",index];
-            [LLBaiDuMapTool sharedInstance].paopaoBMKActionPaopaoView = [[BMKActionPaopaoView alloc] initWithCustomView:
+            [LLBaiDuMapManager sharedInstance].paopaoBMKActionPaopaoView = [[BMKActionPaopaoView alloc] initWithCustomView:
                                                          customer];
             
-            [[LLBaiDuMapTool sharedInstance] ll_addAnnotationWithCoodinate:CLLocationCoordinate2DMake(poi.pt.latitude, poi.pt.
+            [[LLBaiDuMapManager sharedInstance] ll_addAnnotationWithCoodinate:CLLocationCoordinate2DMake(poi.pt.latitude, poi.pt.
                                                                                       longitude) withTitle:poi.name andSubTitle:poi.city toMapView:_mapView];
             
             index++;
@@ -175,13 +175,13 @@
         //        }
         //
         //        //设置自定义大头针数组
-        //        [LLBaiDuMapTool sharedInstance].paopaoBMKActionPaopaoViewArray = tempArray;
+        //        [LLBaiDuMapManager sharedInstance].paopaoBMKActionPaopaoViewArray = tempArray;
         
         //        // 移除之前的大头针
-        //        [[LLBaiDuMapTool sharedInstance] ll_removeAnimations:_mapView.annotations fromMapVirew:_mapView];
+        //        [[LLBaiDuMapManager sharedInstance] ll_removeAnimations:_mapView.annotations fromMapVirew:_mapView];
         //
         //        // 添加到地图上
-        //        [[LLBaiDuMapTool sharedInstance] ll_addAnnotationArray:array toMapView:_mapView];
+        //        [[LLBaiDuMapManager sharedInstance] ll_addAnnotationArray:array toMapView:_mapView];
         
         ULog(@"大头标签在河北呢,请缩小比例尺之后查看河北全境.大头针也可以点击哦~~~");
 
@@ -197,15 +197,15 @@
     
     NSLog(@"%s",__FUNCTION__);
     
-    [[LLBaiDuMapTool sharedInstance] ll_geoCodeSearchWithCity:@"上海市" withAddress:@"田子坊" success:^(BMKGeoCodeResult *result, BMKSearchErrorCode *error, NSString *errorMsg) {
+    [[LLBaiDuMapManager sharedInstance] ll_geoCodeSearchWithCity:@"上海市" withAddress:@"田子坊" success:^(BMKGeoCodeResult *result, BMKSearchErrorCode *error, NSString *errorMsg) {
         
         
         ULog(@"解析地址\"上海-田子坊\"完成,请缩小比例尺之后查看上海.大头针也可以点击哦~~~");
         
         // 移除之前的大头针
-        [[LLBaiDuMapTool sharedInstance] ll_removeAnimations:_mapView.annotations fromMapVirew:_mapView];
+        [[LLBaiDuMapManager sharedInstance] ll_removeAnimations:_mapView.annotations fromMapVirew:_mapView];
         // 添加大头针
-        [[LLBaiDuMapTool sharedInstance] ll_addAnnotationWithCoodinate:CLLocationCoordinate2DMake(result.location.latitude, result.location.longitude)
+        [[LLBaiDuMapManager sharedInstance] ll_addAnnotationWithCoodinate:CLLocationCoordinate2DMake(result.location.latitude, result.location.longitude)
                                              withTitle:result.address
                                            andSubTitle:nil
                                              toMapView:_mapView];
@@ -231,7 +231,7 @@
     
     CLLocationCoordinate2D cllocationCoordinate2D  = (CLLocationCoordinate2D){30.5, 120.5};
     
-    [[LLBaiDuMapTool sharedInstance] ll_reverseGeoCodeSearchWith:cllocationCoordinate2D success:^(BMKReverseGeoCodeResult *result, BMKSearchErrorCode *error, NSString *errorMsg) {
+    [[LLBaiDuMapManager sharedInstance] ll_reverseGeoCodeSearchWith:cllocationCoordinate2D success:^(BMKReverseGeoCodeResult *result, BMKSearchErrorCode *error, NSString *errorMsg) {
         
         ULog(@"乌镇(30.54,120.5)-> 反地理编码成功 -> 周边检索成功,结果为:%@-%@",result.addressDetail.province,result.addressDetail.city);
         //TODO 这里可以直接进行周边查询
@@ -247,7 +247,7 @@
 - (void)heatMapAction
 {
 //    NSLog(@"%s",__FUNCTION__);
-    [[LLBaiDuMapTool sharedInstance] ll_openOrCloseBaiduHeatMap:_mapView];
+    [[LLBaiDuMapManager sharedInstance] ll_openOrCloseBaiduHeatMap:_mapView];
     ULog(@"打开了热力图");
 
 }
@@ -256,7 +256,7 @@
 - (void)trafficAction
 {
 //    NSLog(@"%s",__FUNCTION__);
-    [[LLBaiDuMapTool sharedInstance] ll_openOrCloseBaiduTraffic:_mapView];
+    [[LLBaiDuMapManager sharedInstance] ll_openOrCloseBaiduTraffic:_mapView];
     ULog(@"打开了交通状况图");
     
 }
@@ -266,7 +266,7 @@
 {
 //    NSLog(@"%s",__FUNCTION__);
     ULog(@"卫星图切换");
-    [[LLBaiDuMapTool sharedInstance] ll_openOrCloseBaiduSatelliteType:_mapView];
+    [[LLBaiDuMapManager sharedInstance] ll_openOrCloseBaiduSatelliteType:_mapView];
 }
 
 
@@ -276,7 +276,7 @@
     
     CLLocationCoordinate2D cllocationCoordinate2D  = (CLLocationCoordinate2D){30.5, 120.5};
     //发起周边检索
-    [[LLBaiDuMapTool sharedInstance] ll_doNearBySearchDealWithKey:@"乌镇" andNearByCenter:cllocationCoordinate2D success:^(NSArray *BMKPoiInfoArray, BMKSearchErrorCode *error, NSString *errorMsg) {
+    [[LLBaiDuMapManager sharedInstance] ll_doNearBySearchDealWithKey:@"乌镇" andNearByCenter:cllocationCoordinate2D success:^(NSArray *BMKPoiInfoArray, BMKSearchErrorCode *error, NSString *errorMsg) {
 //            NSLog(@"%s  %@",__FUNCTION__,BMKPoiInfoArray);
         ULog(@"乌镇(30.54,120.5)-> 周边检索成功,结果为:%@",BMKPoiInfoArray);
         

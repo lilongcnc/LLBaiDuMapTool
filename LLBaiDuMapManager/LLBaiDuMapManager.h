@@ -38,7 +38,7 @@ typedef void(^didFailToLocateUserWithErrorBlock)(NSError *error);
 typedef void(^mapViewDidFinishLoadingBlock)(BMKMapView *mapView);
 
 
-@interface LLBaiDuMapTool : NSObject
+@interface LLBaiDuMapManager : NSObject
 
 ILSingleton_H
 
