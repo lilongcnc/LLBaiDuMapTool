@@ -46,6 +46,8 @@
     int showBMKViewIndex;
 }
 
+ILSingleton_M
+
 #pragma mark - 代理相关
 - (void)ll_setDelegateNil{
     _myMapView.delegate = nil; // 不用时，置nil
@@ -62,6 +64,10 @@
 {
     if (!_myLocalSever) {
         _myLocalSever = [[BMKLocationService alloc] init];
+        //定位精确度，精确度越高越耗电
+        _myLocalSever.desiredAccuracy = kCLLocationAccuracyBest;
+        //定位的更新频率，单位为米
+        _myLocalSever.distanceFilter = kCLDistanceFilterNone;
     }
     return _myLocalSever;
 }

@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "ZYHTBaiduMap.h"
-
+#import "ILSingletom.h"
 
 typedef NS_ENUM(NSInteger, LLBMKPinAnnotationColor) {
     LLBMKPinAnnotationColorRed = 0,
@@ -39,6 +39,8 @@ typedef void(^mapViewDidFinishLoadingBlock)(BMKMapView *mapView);
 
 
 @interface LLBaiDuMapTool : NSObject
+
+ILSingleton_H
 
 /**
  *  初始化BMKMapView相关

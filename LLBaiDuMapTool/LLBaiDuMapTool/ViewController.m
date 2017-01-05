@@ -14,6 +14,12 @@
 #import "CustomBuddleView.h"
 
 
+//DEBUG  模式下打印日志,当前行 并弹出一个警告
+#ifdef DEBUG
+#   define ULog(fmt, ...)  { UIAlertView *alert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"%s\n [Line: %d] ", __PRETTY_FUNCTION__, __LINE__] message:[NSString stringWithFormat:fmt, ##__VA_ARGS__]  delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil]; [alert show]; }
+#else
+#   define ULog(...)
+#endif
 
 @interface ViewController ()
 {
@@ -21,7 +27,6 @@
 }
 
 
-@property (nonatomic,strong) LLBaiDuMapTool *myBaiDuMapTool;
 @property (nonatomic,strong) UILabel *myTipLabel;
 @property (nonatomic,strong) UILabel *myTipLabel2;
 
@@ -39,71 +44,48 @@
     
     [super viewWillDisappear:animated];
     
-    [_myBaiDuMapTool ll_setDelegateNil];
+    [[LLBaiDuMapTool sharedInstance] ll_setDelegateNil];
 }
 
 
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    [_myBaiDuMapTool addDelegate];
+    [[LLBaiDuMapTool sharedInstance] addDelegate];
 }
 
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    _myBaiDuMapTool = [LLBaiDuMapTool new];
     
     [self createMapView];
     [self createBtns];
     [self createCoverTips];
 }
 
-- (void)createCoverTips{
-    
-    UIView *tipView = [[UIView alloc] initWithFrame:(CGRect){kScreenWidth-210,kScreenHeight-105,200,90}];
-    tipView.backgroundColor = [UIColor whiteColor];
-    _myTipLabel = ({
-        UILabel *label = [MyUtility createLabelWithFrame:(CGRect){10,10,tipView.frame.size.width-20,35} title:@"111" font:[UIFont systemFontOfSize:12.00]];
-        label.numberOfLines = 0;
-        label.textColor = [UIColor blackColor];
-        [tipView addSubview:label];
-        label;
-    });
-    _myTipLabel2 = ({
-        UILabel *label = [MyUtility createLabelWithFrame:(CGRect){10,_myTipLabel.frame.origin.y+10,tipView.frame.size.width-20,35} title:@"---" font:[UIFont systemFontOfSize:12.00]];
-        label.numberOfLines = 0;
-        label.textColor = [UIColor blackColor];
-        [tipView addSubview:label];
-        label;
-    });
-    
-    [self.view addSubview:tipView];
-}
-
 
 - (void)createMapView
 {
     
-    _mapView = [_myBaiDuMapTool ll_getBMKMapViewWithFrame:CGRectMake(0, 100, kScreenWidth, kScreenHeight - 100) setDelegate:nil];
+    _mapView = [[LLBaiDuMapTool sharedInstance] ll_getBMKMapViewWithFrame:CGRectMake(0, 100, kScreenWidth, kScreenHeight - 100) setDelegate:nil];
     //加载地图完成
-    [_myBaiDuMapTool ll_mapViewDidFinishLoading:^(BMKMapView *mapView) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"" message:@"BMKMapView控件初始化完成" delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles: nil];
-        [alert show];
+    [[LLBaiDuMapTool sharedInstance] ll_mapViewDidFinishLoading:^(BMKMapView *mapView) {
+        
+        ULog(@"BMKMapView控件初始化完成");
     }];
     [self.view addSubview:_mapView];
     
-    [_myBaiDuMapTool ll_setUserLocationServiceConfig];
-    [_myBaiDuMapTool ll_startUserLocationService];
-    [_myBaiDuMapTool ll_didUpdateBMKUserLocation:^(BMKUserLocation *userLocation) {
+    [[LLBaiDuMapTool sharedInstance] ll_setUserLocationServiceConfig];
+    [[LLBaiDuMapTool sharedInstance] ll_startUserLocationService];
+    [[LLBaiDuMapTool sharedInstance] ll_didUpdateBMKUserLocation:^(BMKUserLocation *userLocation) {
         NSLog(@"%s %f,long %f",__FUNCTION__,userLocation.location.coordinate.latitude,userLocation.location.coordinate.longitude);
         NSString *updateLocation = [NSString stringWithFormat:@"userLocation: %f,%f",userLocation.location.coordinate.latitude,userLocation.location.coordinate.longitude];
         _myTipLabel.text = updateLocation;
         
     }];
     
-    [_myBaiDuMapTool ll_didUpdateUserHeadingn:^(BMKUserLocation *userLocation) {
+    [[LLBaiDuMapTool sharedInstance] ll_didUpdateUserHeadingn:^(BMKUserLocation *userLocation) {
         NSLog(@"%s heading is %@",__FUNCTION__,userLocation.heading);
         NSString *headingLocation = [NSString stringWithFormat:@"%@",userLocation.heading];
         _myTipLabel2.text = headingLocation;
@@ -113,18 +95,19 @@
 
 //定位
 - (void)localButtonOnClick{
-    [_myBaiDuMapTool ll_startUserLocationService];
+    [[LLBaiDuMapTool sharedInstance] ll_startUserLocationService];
 }
 
 
 //放大地图
 - (void)jiaBtnOnClick{
-    [_myBaiDuMapTool ll_addZoomLevelWithChangeNumber:1];
+    [[LLBaiDuMapTool sharedInstance] ll_addZoomLevelWithChangeNumber:1];
 }
 
 //缩放地图
 - (void)jianBtnOnClick{
-    [_myBaiDuMapTool ll_reduceZoomLevelWithChangeNumber:1];
+    
+    [[LLBaiDuMapTool sharedInstance] ll_reduceZoomLevelWithChangeNumber:1];
 }
 
 
@@ -137,11 +120,13 @@
 {
     NSLog(@"%s",__FUNCTION__);
     
+    
+    
     //城市区域搜索配置信息
-    _myBaiDuMapTool.cityPageCapacity = 3; //设置显示搜索结果的数量
+    [LLBaiDuMapTool sharedInstance].cityPageCapacity = 3; //设置显示搜索结果的数量
     
     //城市搜索(还可以是附近搜索):
-    [_myBaiDuMapTool ll_doCitySearchDealWithKey:@"河北" success:^(NSArray *BMKPoiInfoArray, BMKSearchErrorCode *error, NSString *errorMsg) {
+    [[LLBaiDuMapTool sharedInstance] ll_doCitySearchDealWithKey:@"河北" success:^(NSArray *BMKPoiInfoArray, BMKSearchErrorCode *error, NSString *errorMsg) {
         
         int index = 0;
         for (BMKPoiInfo *item in BMKPoiInfoArray) {
@@ -149,19 +134,19 @@
         }
         
         //添加大头针配置参数
-        _myBaiDuMapTool.isShowAnimatesDrop = YES;
-        _myBaiDuMapTool.pinImageName = @"weibo-lan";
-        _myBaiDuMapTool.pinColor = BMKPinAnnotationColorGreen;
+        [LLBaiDuMapTool sharedInstance].isShowAnimatesDrop = YES;
+        [LLBaiDuMapTool sharedInstance].pinImageName = @"weibo-lan";
+        [LLBaiDuMapTool sharedInstance].pinColor = BMKPinAnnotationColorGreen;
         
         //********************* 添加大头针方式一 *********************
         for (BMKPoiInfo *poi in BMKPoiInfoArray) {
             
             CustomBuddleView *customer = [[CustomBuddleView alloc]initWithFrame:CGRectMake(0, 0, 220, 125)];
             customer.customerName = [NSString stringWithFormat:@"----->%d",index];
-            _myBaiDuMapTool.paopaoBMKActionPaopaoView = [[BMKActionPaopaoView alloc] initWithCustomView:
+            [LLBaiDuMapTool sharedInstance].paopaoBMKActionPaopaoView = [[BMKActionPaopaoView alloc] initWithCustomView:
                                                          customer];
             
-            [_myBaiDuMapTool ll_addAnnotationWithCoodinate:CLLocationCoordinate2DMake(poi.pt.latitude, poi.pt.
+            [[LLBaiDuMapTool sharedInstance] ll_addAnnotationWithCoodinate:CLLocationCoordinate2DMake(poi.pt.latitude, poi.pt.
                                                                                       longitude) withTitle:poi.name andSubTitle:poi.city toMapView:_mapView];
             
             index++;
@@ -190,22 +175,20 @@
         //        }
         //
         //        //设置自定义大头针数组
-        //        _myBaiDuMapTool.paopaoBMKActionPaopaoViewArray = tempArray;
+        //        [LLBaiDuMapTool sharedInstance].paopaoBMKActionPaopaoViewArray = tempArray;
         
         //        // 移除之前的大头针
-        //        [_myBaiDuMapTool ll_removeAnimations:_mapView.annotations fromMapVirew:_mapView];
+        //        [[LLBaiDuMapTool sharedInstance] ll_removeAnimations:_mapView.annotations fromMapVirew:_mapView];
         //
         //        // 添加到地图上
-        //        [_myBaiDuMapTool ll_addAnnotationArray:array toMapView:_mapView];
+        //        [[LLBaiDuMapTool sharedInstance] ll_addAnnotationArray:array toMapView:_mapView];
         
-        
+        ULog(@"大头标签在河北呢,请缩小比例尺之后查看河北全境.大头针也可以点击哦~~~");
+
     } error:^(BMKSearchErrorCode *error, NSString *errorMsg) {
         
         
     }];
-    
-    
-    
 }
 
 //地理编码
@@ -214,19 +197,22 @@
     
     NSLog(@"%s",__FUNCTION__);
     
-    [_myBaiDuMapTool ll_geoCodeSearchWithCity:@"上海市" withAddress:@"田子坊" success:^(BMKGeoCodeResult *result, BMKSearchErrorCode *error, NSString *errorMsg) {
+    [[LLBaiDuMapTool sharedInstance] ll_geoCodeSearchWithCity:@"上海市" withAddress:@"田子坊" success:^(BMKGeoCodeResult *result, BMKSearchErrorCode *error, NSString *errorMsg) {
         
+        
+        ULog(@"解析地址\"上海-田子坊\"完成,请缩小比例尺之后查看上海.大头针也可以点击哦~~~");
         
         // 移除之前的大头针
-        [_myBaiDuMapTool ll_removeAnimations:_mapView.annotations fromMapVirew:_mapView];
+        [[LLBaiDuMapTool sharedInstance] ll_removeAnimations:_mapView.annotations fromMapVirew:_mapView];
         // 添加大头针
-        [_myBaiDuMapTool ll_addAnnotationWithCoodinate:CLLocationCoordinate2DMake(result.location.latitude, result.location.longitude)
+        [[LLBaiDuMapTool sharedInstance] ll_addAnnotationWithCoodinate:CLLocationCoordinate2DMake(result.location.latitude, result.location.longitude)
                                              withTitle:result.address
                                            andSubTitle:nil
                                              toMapView:_mapView];
         
         
     } error:^(BMKSearchErrorCode *error, NSString *errorMsg) {
+        ULog(@"解析地址异常");
         
     }];
     
@@ -245,18 +231,23 @@
     
     CLLocationCoordinate2D cllocationCoordinate2D  = (CLLocationCoordinate2D){30.5, 120.5};
     
-    [_myBaiDuMapTool ll_reverseGeoCodeSearchWith:cllocationCoordinate2D success:^(BMKReverseGeoCodeResult *result, BMKSearchErrorCode *error, NSString *errorMsg) {
+    [[LLBaiDuMapTool sharedInstance] ll_reverseGeoCodeSearchWith:cllocationCoordinate2D success:^(BMKReverseGeoCodeResult *result, BMKSearchErrorCode *error, NSString *errorMsg) {
         
         //发起周边检索
-        [_myBaiDuMapTool ll_doNearBySearchDealWithKey:@"乌镇" andNearByCenter:result.location success:^(NSArray *BMKPoiInfoArray, BMKSearchErrorCode *error, NSString *errorMsg) {
-            NSLog(@"%s  %@",__FUNCTION__,BMKPoiInfoArray);
+        [[LLBaiDuMapTool sharedInstance] ll_doNearBySearchDealWithKey:@"乌镇" andNearByCenter:result.location success:^(NSArray *BMKPoiInfoArray, BMKSearchErrorCode *error, NSString *errorMsg) {
+//            NSLog(@"%s  %@",__FUNCTION__,BMKPoiInfoArray);
+            ULog(@"乌镇(30.54,120.5)-> 反地理编码成功 -> 周边检索成功,周边检索结果为:%@",BMKPoiInfoArray);
+
         } error:^(BMKSearchErrorCode *error, NSString *errorMsg) {
-            NSLog(@"%s  %@",__FUNCTION__,errorMsg);
+//            NSLog(@"%s  %@",__FUNCTION__,errorMsg);
+            ULog(@"乌镇(30.54,120.5)-> 反地理编码成功 -> 周边检索失败:%@",errorMsg);
+
             
         }];
         
     } error:^(BMKSearchErrorCode *error, NSString *errorMsg) {
-        
+        ULog(@"反地理编码异常:%@",errorMsg);
+
     }];
     
     
@@ -268,23 +259,27 @@
 // 是否打开热力图
 - (void)heatMapAction
 {
-    NSLog(@"%s",__FUNCTION__);
-    [_myBaiDuMapTool ll_openOrCloseBaiduHeatMap:_mapView];
+//    NSLog(@"%s",__FUNCTION__);
+    [[LLBaiDuMapTool sharedInstance] ll_openOrCloseBaiduHeatMap:_mapView];
+    ULog(@"打开了热力图");
+
 }
 
 // 是否打开交通路况
 - (void)trafficAction
 {
-    NSLog(@"%s",__FUNCTION__);
-    [_myBaiDuMapTool ll_openOrCloseBaiduTraffic:_mapView];
+//    NSLog(@"%s",__FUNCTION__);
+    [[LLBaiDuMapTool sharedInstance] ll_openOrCloseBaiduTraffic:_mapView];
+    ULog(@"打开了交通状况图");
     
 }
 
 // 卫星图切换
 - (void)mapTypeAction
 {
-    NSLog(@"%s",__FUNCTION__);
-    [_myBaiDuMapTool ll_openOrCloseBaiduSatelliteType:_mapView];
+//    NSLog(@"%s",__FUNCTION__);
+    ULog(@"卫星图切换");
+    [[LLBaiDuMapTool sharedInstance] ll_openOrCloseBaiduSatelliteType:_mapView];
 }
 
 
@@ -362,6 +357,29 @@
 
 
 #pragma mark ================ UI部分 ================
+
+- (void)createCoverTips{
+    
+    UIView *tipView = [[UIView alloc] initWithFrame:(CGRect){kScreenWidth-210,kScreenHeight-105,200,90}];
+    tipView.backgroundColor = [UIColor whiteColor];
+    _myTipLabel = ({
+        UILabel *label = [MyUtility createLabelWithFrame:(CGRect){10,10,tipView.frame.size.width-20,35} title:@"- 未显示 -" font:[UIFont systemFontOfSize:12.00]];
+        label.numberOfLines = 0;
+        label.textColor = [UIColor blackColor];
+        [tipView addSubview:label];
+        label;
+    });
+    _myTipLabel2 = ({
+        UILabel *label = [MyUtility createLabelWithFrame:(CGRect){10,_myTipLabel.frame.origin.y+35+10,tipView.frame.size.width-20,35} title:@"- 未显示 -" font:[UIFont systemFontOfSize:12.00]];
+        label.numberOfLines = 0;
+        label.textColor = [UIColor blackColor];
+        [tipView addSubview:label];
+        label;
+    });
+    
+    [self.view addSubview:tipView];
+}
+
 
 - (void)createBtns
 {
