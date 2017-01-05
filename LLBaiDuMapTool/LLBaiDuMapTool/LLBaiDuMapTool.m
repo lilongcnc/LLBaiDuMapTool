@@ -145,9 +145,8 @@ ILSingleton_M
 - (void)didUpdateUserHeading:(BMKUserLocation *)userLocation
 {
     NSLog(@"heading is %@",userLocation.heading);
-    if (_headingblock) {
+    if (_headingblock)
         _headingblock(userLocation);
-    }
 //        [_mapView updateLocationData:userLocation];
 }
 
@@ -157,9 +156,9 @@ ILSingleton_M
     NSLog(@"didUpdateUserLocation lat %f,long %f",userLocation.location.coordinate.latitude,userLocation.location.coordinate.longitude);
     [self.myLocalSever stopUserLocationService];
     
-    if (_localblock) {
+    if (_localblock)
         _localblock(userLocation);
-    }
+    
     
     [_myMapView updateLocationData:userLocation]; //出现定位点
     
@@ -173,9 +172,9 @@ ILSingleton_M
 //定位失败后，会调用此函数
 - (void)didFailToLocateUserWithError:(NSError *)error
 {
-    if (_localFailedblock) {
+    if (_localFailedblock)
         _localFailedblock(error);
-    }
+    
     
     //默认处理
     NSLog(@"%s",__FUNCTION__);
@@ -272,8 +271,8 @@ ILSingleton_M
 #pragma mark ================ 搜索之城市搜索 ================
 -(void)ll_doCitySearchDealWithKey:(NSString *)keyWord  success:(searchOptionResultSuccessBlock)successBlock error:(searchOptionResultErrorBlock)errorBlock{
     
-    self.searchOptionSuccessBlock = successBlock;
-    self.searchOptionErrorBlock = errorBlock;
+    _searchOptionSuccessBlock = successBlock;
+    _searchOptionErrorBlock = errorBlock;
     
     
     NSLog(@"城市检索");
@@ -299,8 +298,8 @@ ILSingleton_M
 -(void)ll_doNearBySearchDealWithKey:(NSString *)keyWord andNearByCenter:(CLLocationCoordinate2D)center success:(searchOptionResultSuccessBlock)successBlock error:(searchOptionResultErrorBlock)errorBlock{
     
     
-    self.searchOptionSuccessBlock = successBlock;
-    self.searchOptionErrorBlock = errorBlock;
+    _searchOptionSuccessBlock = successBlock;
+    _searchOptionErrorBlock = errorBlock;
     
     NSLog(@"周边检索");
     //发起检索
@@ -318,7 +317,8 @@ ILSingleton_M
     }
     else
     {
-        self.searchOptionErrorBlock(nil,@"周边检索发送失败");
+        if (_searchOptionErrorBlock)
+            _searchOptionErrorBlock(nil,@"周边检索发送失败");
     }
 }
 
@@ -334,14 +334,18 @@ ILSingleton_M
 {
     if (error == BMK_SEARCH_NO_ERROR) {
         //在此处理正常结果
-        self.searchOptionSuccessBlock(poiResultList.poiInfoList,&error,@"成功搜索到结果");
+        if (_searchOptionSuccessBlock)
+            _searchOptionSuccessBlock(poiResultList.poiInfoList,&error,@"成功搜索到结果");
     }
     else if (error == BMK_SEARCH_AMBIGUOUS_KEYWORD){
         //当在设置城市未找到结果，但在其他城市找到结果时，回调建议检索城市列表
         // result.cityList;
-        self.searchOptionErrorBlock(&error,@"起始点有歧义");
+        if (_searchOptionErrorBlock)
+            _searchOptionErrorBlock(&error,@"起始点有歧义");
+        
     } else {
-        self.searchOptionErrorBlock(&error,@"抱歉，未找到结果");
+        if (_searchOptionErrorBlock)
+            _searchOptionErrorBlock(&error,@"抱歉，未找到结果");
     }
 }
 
@@ -393,9 +397,8 @@ ILSingleton_M
 
 #pragma mark - BMKMapViewDelegate
 - (void)mapViewDidFinishLoading:(BMKMapView *)mapView {
-    if (_mapViewFinshblock) {
+    if (_mapViewFinshblock)
         _mapViewFinshblock(mapView);
-    }
 }
 
 //自定义大头针
@@ -444,8 +447,8 @@ ILSingleton_M
 //地理解析
 - (void)ll_geoCodeSearchWithCity:(NSString *)cityStr withAddress:(NSString *)addressStr success:(getGeoCodeResultSuccessBlock)successBlock error:(getGeoCodeResultErrorBlock)errorBlock{
     
-    self.getGeoCodeSuccessBlock = successBlock;
-    self.getGeoCodeErrorBlock = errorBlock;
+    _getGeoCodeSuccessBlock = successBlock;
+    _getGeoCodeErrorBlock = errorBlock;
     
     
     BMKGeoCodeSearch *geocoderSearcher =[[BMKGeoCodeSearch alloc]init];
@@ -462,7 +465,8 @@ ILSingleton_M
     }
     else
     {
-        self.getGeoCodeErrorBlock(nil,@"geo检索发送失败");
+        if (_getGeoCodeErrorBlock)
+            self.getGeoCodeErrorBlock(nil,@"geo检索发送失败");
     }
 }
 
@@ -470,8 +474,8 @@ ILSingleton_M
 //反地理解析
 - (void)ll_reverseGeoCodeSearchWith:(CLLocationCoordinate2D)cllocationCoordinate2D success:(getReverseGeoCodeResultSuccessBlock)successBlock error:(getReverseGeoCodeResultErrorBlock)errorBlock{
 
-    self.getReverseGeoCodeSuccessBlock = successBlock;
-    self.getReverseGeoCodeErrorBlock = errorBlock;
+    _getReverseGeoCodeSuccessBlock = successBlock;
+    _getReverseGeoCodeErrorBlock = errorBlock;
     
     
     BMKGeoCodeSearch *geocoderSearcher =[[BMKGeoCodeSearch alloc]init];
@@ -487,7 +491,8 @@ ILSingleton_M
     }
     else
     {
-        self.getReverseGeoCodeErrorBlock(nil,@"反geo检索发送失败");
+        if (_getReverseGeoCodeErrorBlock)
+            _getReverseGeoCodeErrorBlock(nil,@"反geo检索发送失败");
     }
 }
 
@@ -499,11 +504,13 @@ ILSingleton_M
     NSLog(@"%s",__FUNCTION__);
     if (error == BMK_SEARCH_NO_ERROR) {
         //在此处理正常结果
-        self.getGeoCodeSuccessBlock(result,&error,@"成功接收地理编码结果");
+        if (_getGeoCodeSuccessBlock)
+            _getGeoCodeSuccessBlock(result,&error,@"成功接收地理编码结果");
     }
     else {
         NSLog(@"抱歉，未找到结果");
-        self.getGeoCodeErrorBlock(&error,@"抱歉，未找到结果");
+        if (_getGeoCodeErrorBlock)
+            _getGeoCodeErrorBlock(&error,@"抱歉，未找到结果");
     }
 }
 
@@ -521,11 +528,13 @@ ILSingleton_M
       if (error == BMK_SEARCH_NO_ERROR) {
           // 在此处理正常结果
           NSLog(@"%@", result.address);
-          self.getReverseGeoCodeSuccessBlock(result,&error,@"成功接收反向地理编码结果");
+          if (self.getReverseGeoCodeSuccessBlock)
+              self.getReverseGeoCodeSuccessBlock(result,&error,@"成功接收反向地理编码结果");
           
       }
       else {
-          self.getReverseGeoCodeErrorBlock(nil,@"抱歉，未找到结果");
+          if (self.getReverseGeoCodeErrorBlock)
+              self.getReverseGeoCodeErrorBlock(nil,@"抱歉，未找到结果");
       }
 }
 

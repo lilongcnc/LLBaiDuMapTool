@@ -233,26 +233,13 @@
     
     [[LLBaiDuMapTool sharedInstance] ll_reverseGeoCodeSearchWith:cllocationCoordinate2D success:^(BMKReverseGeoCodeResult *result, BMKSearchErrorCode *error, NSString *errorMsg) {
         
-        //发起周边检索
-        [[LLBaiDuMapTool sharedInstance] ll_doNearBySearchDealWithKey:@"乌镇" andNearByCenter:result.location success:^(NSArray *BMKPoiInfoArray, BMKSearchErrorCode *error, NSString *errorMsg) {
-//            NSLog(@"%s  %@",__FUNCTION__,BMKPoiInfoArray);
-            ULog(@"乌镇(30.54,120.5)-> 反地理编码成功 -> 周边检索成功,周边检索结果为:%@",BMKPoiInfoArray);
-
-        } error:^(BMKSearchErrorCode *error, NSString *errorMsg) {
-//            NSLog(@"%s  %@",__FUNCTION__,errorMsg);
-            ULog(@"乌镇(30.54,120.5)-> 反地理编码成功 -> 周边检索失败:%@",errorMsg);
-
-            
-        }];
+        ULog(@"乌镇(30.54,120.5)-> 反地理编码成功 -> 周边检索成功,结果为:%@-%@",result.addressDetail.province,result.addressDetail.city);
+        //TODO 这里可以直接进行周边查询
         
     } error:^(BMKSearchErrorCode *error, NSString *errorMsg) {
         ULog(@"反地理编码异常:%@",errorMsg);
 
     }];
-    
-    
-    
-
 }
 
 
@@ -284,7 +271,23 @@
 
 
 
+//周边查询
+- (void)nearAction{
+    
+    CLLocationCoordinate2D cllocationCoordinate2D  = (CLLocationCoordinate2D){30.5, 120.5};
+    //发起周边检索
+    [[LLBaiDuMapTool sharedInstance] ll_doNearBySearchDealWithKey:@"乌镇" andNearByCenter:cllocationCoordinate2D success:^(NSArray *BMKPoiInfoArray, BMKSearchErrorCode *error, NSString *errorMsg) {
+//            NSLog(@"%s  %@",__FUNCTION__,BMKPoiInfoArray);
+        ULog(@"乌镇(30.54,120.5)-> 周边检索成功,结果为:%@",BMKPoiInfoArray);
+        
+    } error:^(BMKSearchErrorCode *error, NSString *errorMsg) {
+//            NSLog(@"%s  %@",__FUNCTION__,errorMsg);
+        ULog(@"乌镇(30.54,120.5)-> 周边检索失败:%@",errorMsg);
+        
+    }];
 
+    
+}
 
 #pragma mark ================ BMKRouteSearch:公交/开车/步行线路:未封装 ================
 ////公交线路
@@ -389,6 +392,7 @@
     UIButton *mapTypeButton = [MyUtility createButtonWithFrame:CGRectMake(220, 30, 60, 20) title:@"卫星图" backgroundImageName:nil target:self action:@selector(mapTypeAction)];
     UIButton *trafficButton = [MyUtility createButtonWithFrame:CGRectMake(10, 60, 60, 20) title:@"路况" backgroundImageName:nil target:self action:@selector(trafficAction)];
     UIButton *heatMapButton = [MyUtility createButtonWithFrame:CGRectMake(80, 60, 60, 20) title:@"热力图" backgroundImageName:nil target:self action:@selector(heatMapAction)];
+    UIButton *nearByButton = [MyUtility createButtonWithFrame:CGRectMake(150, 60, 60, 20) title:@"周边查询" backgroundImageName:nil target:self action:@selector(nearAction)];
 //    UIButton *metroButton = [MyUtility createButtonWithFrame:CGRectMake(150, 60, 60, 20) title:@"公交" backgroundImageName:nil target:self action:@selector(metroAction)];
     UIButton *localButton = [MyUtility createButtonWithFrame:CGRectMake(15, self.view.frame.size.height-35-50, 45, 45) title:@"" backgroundImageName:@"dingwei2" target:self action:@selector(localButtonOnClick)];
     
@@ -419,6 +423,7 @@
     [self.view addSubview:trafficButton];
     [self.view addSubview:heatMapButton];
 //    [self.view addSubview:metroButton];
+    [self.view addSubview:nearByButton];
     [self.view addSubview:localButton];
     [self.view addSubview:jiajian];
 }
