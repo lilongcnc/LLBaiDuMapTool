@@ -143,11 +143,15 @@
             
             CustomBuddleView *customer = [[CustomBuddleView alloc]initWithFrame:CGRectMake(0, 0, 220, 125)];
             customer.customerName = [NSString stringWithFormat:@"----->%d",index];
+            
             [LLBaiDuMapManager sharedInstance].paopaoBMKActionPaopaoView = [[BMKActionPaopaoView alloc] initWithCustomView:
                                                          customer];
             
+//            [[LLBaiDuMapManager sharedInstance] ll_addAnnotationWithCoodinate:CLLocationCoordinate2DMake(poi.pt.latitude, poi.pt.
+//                                                                                      longitude) withTitle:poi.name andSubTitle:poi.city toMapView:_mapView];
+            
             [[LLBaiDuMapManager sharedInstance] ll_addAnnotationWithCoodinate:CLLocationCoordinate2DMake(poi.pt.latitude, poi.pt.
-                                                                                      longitude) withTitle:poi.name andSubTitle:poi.city toMapView:_mapView];
+                                                                                                         longitude) withTitle:@"111111" andSubTitle:@"222222" toMapView:_mapView];
             
             index++;
         }
@@ -215,9 +219,6 @@
         ULog(@"解析地址异常");
         
     }];
-    
-
-    
 }
 
 //反地理编码

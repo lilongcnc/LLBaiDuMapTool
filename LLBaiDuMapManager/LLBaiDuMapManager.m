@@ -471,6 +471,7 @@ ILSingleton_M
 }
 
 
+
 //反地理解析
 - (void)ll_reverseGeoCodeSearchWith:(CLLocationCoordinate2D)cllocationCoordinate2D success:(getReverseGeoCodeResultSuccessBlock)successBlock error:(getReverseGeoCodeResultErrorBlock)errorBlock{
 
@@ -501,6 +502,8 @@ ILSingleton_M
 - (void)onGetGeoCodeResult:(BMKGeoCodeSearch *)searcher result:(BMKGeoCodeResult *)result errorCode:(BMKSearchErrorCode)error
 {
     
+    NSLog(@"onGetGeoCodeResult: %f---%f",result.location.longitude,result.location.latitude);
+
     NSLog(@"%s",__FUNCTION__);
     if (error == BMK_SEARCH_NO_ERROR) {
         //在此处理正常结果
